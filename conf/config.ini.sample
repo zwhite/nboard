@@ -1,0 +1,32 @@
+# nboard configuration file.
+
+[general]
+# Most people will need to adjust these for their environment.
+statusfile:     /usr/local/nagios/var/status.dat
+commandfile:    /usr/local/nagios/var/rw/nagios.cmd
+contactsfile:   /usr/local/nagios/etc/contacts.cfg
+
+# If you wish to display graphs, see the README.graphs file.
+showHostGraphs: false
+# Fixme: Make this easier to figure out
+hostGraphBaseUrl: http://%s.example.com/rrd/%s/%s.rrd
+
+# List below any groups you want to show in the top menu. The value should be
+# a comma separated list of "host_name"s to include. In a future version this
+# information will be pulled directly from nagios configuration.
+#
+# The number prefix determins order from left to right.
+[groups]
+1_web:      web1.sv2, web2.sv2, web3.sv2, web4.sv2, web5.sv2
+
+# critical is a special group. It will only turn yellow or green if services
+# and/or hosts that have not had notifications disabled have been marked
+# as warning or critical. The idea is that you can watch the status of this
+# group to see if there are any new problems to watch out for.
+0_critical: web1.sv2, web2.sv2
+
+# 24x24 icons work well here. You can use larger icons by adjusting the 
+# index.html frame spacing.
+[icons]
+web: images/website.png
+critical: images/nboard_24.png
