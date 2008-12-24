@@ -1,0 +1,16 @@
+How To Display Graphs On Host Status Pages
+
+If you are using the eluna graph system on your monitored servers you can
+display those graphs on the host status page. For more information about
+the eluna graph system see:
+
+http://steph.eluna.org/eluna_graph_system.html
+
+Right now the feature is not complete. If you wish to use it you will have
+to edit a script and may have to add some code. It is not for the feint of
+heart.
+
+* Edit line 54 of hostrrd.cgi, change the URL template to match your
+  environment.
+* (optional) Change the if statements further down that build the RRD
+  to add or customize graphs for your environment.

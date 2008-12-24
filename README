@@ -1,0 +1,74 @@
+nboard - The Network Dashboard
+
+Note: This project is in the process of being released for public distribution.
+Certain files have not been committed until they can vetted and approved for
+distribution. It it hoped that this disclaimer can be removed before 2009. :)
+
+This project aims to provide a high-level overview of your network, with the 
+capability to drill-down to find problems or indicate that a problem has been 
+reviewed and is being worked on. 
+
+It builds upon Nagios, eluna, rrdtool and other tools that are a standard part
+of nearly every sysadmin's toolkit. It doesn't attempt to collect or store
+data, it merely displays data that you have already collected using other means.
+
+
+Introduction
+------------
+
+The beautiful thing about Nagios is that it is adaptable to a lot of 
+situations. This adaptability comes at a price, however, as organizations often
+have little or no idea how to actually use nagios, and many admins have 
+conflicting ideas about how to work with nagios. Do you acknowledge alerts
+or just silence them for that service? How do I figure out what's actually
+going on? What are comments good for anyway?
+
+To solve these perceived problems we wrote our own interface. We feel this
+interface gives us a better view over our network and allows us to actually
+work with nagios, not simply use it for notification purposes.
+
+To be successful with this, you must understand that it does not operate in
+the same way as the standard nagios interface. Overlapping functionality
+is abrstracted away, and a common set of functions are exposed to the user,
+hiding the complexity of the underlying nagios software.
+
+
+Available Actions
+-----------------
+
+The user has a limited amount of interaction with the system, in order to
+limit the potential user confusion. The following actions are available:
+
+Silence Alerts:
+
+This will prompt the user for a message, which will be sent out to contacts
+configured in nagios and displayed on the host overview page. Additionally
+it will silence further alerts on for that service. If you silence alerts
+for a host, all services on that host are silenced as well.
+
+Unsilence Alerts:
+
+This will remove the status message an reenable alerts. If a host has alerts
+unsilenced it will also unsilence all services for that host.
+
+Send Message:
+
+Send a message to all contacts associated with a host or service. 
+
+
+Installation
+------------
+
+Installation consists of unarchiving or moving these files into your web
+tree. Ensure that your web server is setup to handle .cgi files and that
+all the .cgi files are executable. (FIXME: Make this easier for inexperienced
+admins to understand)
+
+Edit the conf/config.ini and customize the settings for your need. At this
+time you have to explicitly define the machines you wish to display. In the
+future the configuration will be read to determine this information.
+
+You should enable authentication in some manor. Most sites will probably use
+.htaccess/.htpasswd. You will not be able to silence alerts or send messages
+unless you log in using an account that matches a contact. (Similar to the
+official nagios interface.)
