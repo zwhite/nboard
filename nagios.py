@@ -12,6 +12,7 @@ contactstatus = {}
 hoststatus = {}
 info = {}
 nagiosstatus = {}
+statuses = ['statusGood', 'statusWarn', 'statusCrit']
 
 # Parse our configuration
 config = ConfigParser.SafeConfigParser()
@@ -126,6 +127,47 @@ for line in status_f:
 
 
 # Useful functions
+def groupStatus(group, critical=False):
+    """Returns the aggregated status of a group. 
+
+    If critical is True statuses['statusCrit'] will only be returned if there
+    are unacknowledged problems.
+    """
+    status = 0
+    for host in hostlist[group]:
+        if hoststatus[host]['current_state'] == "1":
+            if status < 2:
+                notifications = hoststatus[host]['notifications_enabled']
+                notifications = hoststatus[host]['notifications_enabled']
+                if notifications == "0":
+                    status = 1
+                else:
+                    status = 2
+                continue    # No need to check the services, host is down
+        for service in hoststatus[host]['services']:
+            service = hoststatus[host]['services'][service]
+            if critical and service['notifications_enabled'] == "0":
+                continue
+            if service['current_state'] == "2":
+                if service['notifications_enabled'] == "0":
+                    if status < 1: status = 1
+                else:
+                    if status < 2: status = 2
+            elif service['current_state'] == "1":
+                if status < 1: status = 1
+    return status
+
+
+def allGroupStatus():
+    status = {}
+    for group in hostlist:
+        if group == 'critical':
+            status[group] = groupStatus(group, True)
+        else:
+            status[group] = groupStatus(group)
+    return status
+
+
 def permUserWrite(user):
     "Returns true if the supplied user is allowed to perform write operations."
     if user in contacts:

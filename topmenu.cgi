@@ -12,37 +12,8 @@ HTML = open('templates/basic.html').read()
 # 0 - A-OK
 # 1 - Warning
 # 2 - Critical
-status = {}
-for group in nagios.hostlist:
-    status[group] = 0
+status = nagios.allGroupStatus()
 statuses = ['statusGood', 'statusWarn', 'statusCrit']
-
-for host in nagios.hoststatus:
-    if nagios.hoststatus[host]['current_state'] == "1":
-        for group in status:
-            if host in nagios.hostlist[group]:
-                if status[group] < 2: status[group] = 2
-    else:
-        # Check the services
-        for service in nagios.hoststatus[host]['services']:
-            service = nagios.hoststatus[host]['services'][service]
-            if host in nagios.hostlist['critical']:
-                if service['notifications_enabled'] == "0" \
-                 or service['problem_has_been_acknowledged'] == "1":
-                    # Don't count this against the critical
-                    continue
-            if service['current_state'] == "2":
-                for type in status:
-                    if host in nagios.hostlist[type]:
-                        if service['notifications_enabled'] == "0" \
-                         or service['problem_has_been_acknowledged'] == "1":
-                            if status[type] < 1: status[type] = 1
-			else:
-                            if status[type] < 2: status[type] = 2
-            elif service['current_state'] == "1":
-                for type in status:
-                    if host in nagios.hostlist[type]:
-                        if status[type] < 1: status[type] = 1
 
 # Generate the page
 bodytext = []
