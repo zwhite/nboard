@@ -127,41 +127,49 @@ for line in status_f:
 
 
 # Useful functions
-def groupStatus(group):
-    """Returns the aggregated status of a group. 
-
-    If critical is True statuses['statusCrit'] will only be returned if there
-    are unacknowledged problems.
-    """
-    status = 0
-    for host in hostlist[group]:
-        if hoststatus[host]['current_state'] == "1":
-            if status < 2:
-                notifications = hoststatus[host]['notifications_enabled']
-                notifications = hoststatus[host]['notifications_enabled']
-                if notifications == "0":
-                    status = 1
-                else:
-                    status = 2
-                continue    # No need to check the services, host is down
-        for service in hoststatus[host]['services']:
-            service = hoststatus[host]['services'][service]
-            if group == 'critical' and service['notifications_enabled'] == "0":
-                continue
-            if service['current_state'] == "2":
-                if service['notifications_enabled'] == "0":
-                    if status < 1: status = 1
-                else:
-                    if status < 2: status = 2
-            elif service['current_state'] == "1":
-                if status < 1: status = 1
-    return status
-
-
 def allGroupStatus():
     status = {}
     for group in hostlist:
         status[group] = groupStatus(group)
+    return status
+
+
+def groupStatus(group):
+    """Returns the aggregated status of a group. 
+    """
+    status = 0
+    for host in hostlist[group]:
+        currentStatus = hostStatus(host)
+        if currentStatus == "2":
+            # FIXME: critical should only show warn or crit if notifications
+            #        are enabled.
+            #if group == 'critical' and service['notifications_enabled'] == "0":
+            #    continue
+            if status < 2: status = 2
+        else:
+            if status < 1: status = 1
+    return status
+
+
+def hostStatus(host):
+    """Returns the aggregated status of a host. 
+    """
+    if hoststatus[host]['current_state'] == "1":
+            # No need to check the services, host is down
+            if hoststatus[host]['notifications_enabled'] == "0":
+                return 1
+            else:
+                return 2
+    status = 0
+    for service in hoststatus[host]['services']:
+        service = hoststatus[host]['services'][service]
+        if service['current_state'] == "2":
+            if service['notifications_enabled'] == "0":
+                if status < 1: status = 1
+            else:
+                if status < 2: status = 2
+        elif service['current_state'] == "1":
+            if status < 1: status = 1
     return status
 
 
