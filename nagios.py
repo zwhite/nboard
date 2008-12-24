@@ -155,11 +155,11 @@ def hostStatus(host):
     """Returns the aggregated status of a host. 
     """
     if hoststatus[host]['current_state'] == "1":
-            # No need to check the services, host is down
-            if hoststatus[host]['notifications_enabled'] == "0":
-                return 1
-            else:
-                return 2
+        # No need to check the services, host is down
+        if hoststatus[host]['notifications_enabled'] == "0":
+            return 1
+        else:
+            return 2
     status = 0
     for service in hoststatus[host]['services']:
         service = hoststatus[host]['services'][service]
