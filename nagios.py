@@ -31,6 +31,8 @@ for group, list in config.items('icons'):
 statusfile = config.get('general', 'statusfile')
 commandfile = config.get('general', 'commandfile')
 contactsfile = config.get('general', 'contactsfile')
+showHostGraphs = config.getboolean('general', 'showHostGraphs')
+hostGraphBaseUrl = config.get('general', 'hostGraphBaseUrl', True)
 
 # Parse the contactsfile
 contacts_f = open(contactsfile, 'r').readlines()

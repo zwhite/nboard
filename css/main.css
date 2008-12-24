@@ -1,0 +1,147 @@
+body, html {
+	font-size: 11pt;
+	background-color: #BDD8E9;
+	color: black;
+}
+
+a {
+	margin-left: 0.5ex;
+	margin-right: 0.5ex;
+	text-decoration: underline;
+}
+
+a:link {
+	color: #000000;
+}
+
+a:visited {
+	color: #000000;
+}
+
+div {
+	margin-left: 0.5ex;
+}
+
+h1 {
+	font-size: 200%;
+	font-weight: bold;
+	margin-top: 0.5ex;
+	text-align: center;
+}
+
+h2 {
+	font-size: 180%;
+	font-weight: bold;
+	margin-top: 0.5ex;
+	text-align: center;
+}
+
+h3 {
+	font-size: 160%;
+	font-weight: bold;
+	text-align: center;
+}
+
+h4 {
+	font-size: 140%;
+	font-weight: bold;
+	text-align: center;
+}
+
+h5 {
+	font-size: 120%;
+	font-weight: bold;
+	text-align: center;
+}
+
+img {
+	border: 0;
+	margin-top: 3px;
+	margin-left: 3px;
+}
+
+input {
+	margin-left: 0.5ex;
+	margin-right: 0.5ex;
+}
+
+li {
+	list-style-type: square;
+}
+
+p {
+	margin-left: 1ex;
+	margin-right: 0.5ex;
+}
+
+table {
+	width: 95%;
+	margin-left: 1ex;
+	margin-right: 0.5ex;
+}
+
+td {
+	background-color: #BBBBBB;
+	border: 1px solid white;
+	border-left: none;
+	color: black;
+}
+
+th {
+	background-color: #444444;
+	border: 1px solid white;
+	border-left: none;
+	border-top: none;
+	color: white;
+	text-align: center;
+}
+
+/* Random classes that can be applied */
+.narrow {
+	text-align: center;
+	width: 4ex;
+}
+
+.list {
+	display: block;
+	float: clear;
+	width: 90%;
+	text-align: left;
+}
+
+/* Classes for styling statuses */
+.statusGood {
+	background-color: green;
+	color: black;
+}
+
+.statusWarn {
+	background-color: #ECEC00;
+	color: black;
+}
+
+.statusCrit {
+	background-color: #EA2727;
+	color: black;
+}
+
+div.statusGood, div.statusWarn, div.statusCrit {
+	float: left;
+}
+
+/* Classes for images */
+.icon {
+	text-align: right;
+	cursor: pointer;
+}
+
+/* Comment related blocks */
+#commentEntryText {
+	margin-left: 0;
+	margin-right: 0.5ex;
+	width: 75%;
+}
+
+#commentEntryReason {
+	text-align: left;
+}
