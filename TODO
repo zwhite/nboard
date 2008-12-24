@@ -1,0 +1,4 @@
+iphone.cgi:
+	Make this more AJAXy. It takes a while to fetch and render the current
+	output, especially over EDGE. Should only return the overview pages 
+	maybe the groups, and fetch the rest on demand.
