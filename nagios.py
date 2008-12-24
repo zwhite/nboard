@@ -127,7 +127,7 @@ for line in status_f:
 
 
 # Useful functions
-def groupStatus(group, critical=False):
+def groupStatus(group):
     """Returns the aggregated status of a group. 
 
     If critical is True statuses['statusCrit'] will only be returned if there
@@ -146,7 +146,7 @@ def groupStatus(group, critical=False):
                 continue    # No need to check the services, host is down
         for service in hoststatus[host]['services']:
             service = hoststatus[host]['services'][service]
-            if critical and service['notifications_enabled'] == "0":
+            if group == 'critical' and service['notifications_enabled'] == "0":
                 continue
             if service['current_state'] == "2":
                 if service['notifications_enabled'] == "0":
@@ -161,10 +161,7 @@ def groupStatus(group, critical=False):
 def allGroupStatus():
     status = {}
     for group in hostlist:
-        if group == 'critical':
-            status[group] = groupStatus(group, True)
-        else:
-            status[group] = groupStatus(group)
+        status[group] = groupStatus(group)
     return status
 
 
