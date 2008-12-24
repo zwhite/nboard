@@ -33,10 +33,15 @@ bodytext.append('\n <hr />')
 bodytext.append(' <h2><a href="contacts.cgi" target="main_f">Contacts</a></h2>')
 
 # Show the hosts in this current group
-statuses = ['statusGood', 'statusWarn', 'statusCrit']
-
 bodytext.append('\n <hr />')
-bodytext.append('\n <h2><a target="main_f" href="groupoverview.cgi?group=%s">%s</a></h2>' % (group, group.title()))
+statusClass = nagios.statuses[nagios.groupStatus(group)]
+bodytext.append('\n <h2 class="%s">' % statusClass)
+bodytext.append('  <a target="main_f" href="groupoverview.cgi?group=%s">' % group)
+icon = nagios.icons[group]
+bodytext.append('    <img src="%s" />' % icon)
+bodytext.append('   ' + group.title())
+bodytext.append('  </a>')
+bodytext.append(' </h2>')
 hostlist = nagios.hoststatus.keys()
 hostlist.sort()
 for host in hostlist:
@@ -47,6 +52,6 @@ for host in hostlist:
             service_status=int(service['current_state'])
             if service_status > current_status:
                 current_status = service_status
-        bodytext.append('  <a class="%s list" target="main_f" href="hoststatus.cgi?host=%s"><img src="%s" /> %s</a>' % (statuses[current_status], host, nagios.icons[group], host))
+        bodytext.append('  <a class="%s list" target="main_f" href="hoststatus.cgi?host=%s"><img src="%s" /> %s</a>' % (nagios.statuses[current_status], host, nagios.icons[group], host))
 
 print HTML % {'refresh': 60, 'body': '\n'.join(bodytext)}
