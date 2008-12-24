@@ -31,6 +31,7 @@ for extra in extraList:
 # Show the Nagios menu items
 bodytext.append('\n <hr />')
 bodytext.append(' <h2><a href="contacts.cgi" target="main_f">Contacts</a></h2>')
+bodytext.append(' <h2><a href="iphone.cgi" target="_blank">iPhone</a></h2>')
 
 # Show the hosts in this current group
 bodytext.append('\n <hr />')
