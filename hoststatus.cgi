@@ -17,7 +17,6 @@ hoststatus = nagios.hoststatus[host]
 if 'REMOTE_USER' in os.environ:
     user = os.environ['REMOTE_USER']
 else:
-    # FIXME: Pull this from the ini
     user = 'guest'
 
 # Setup the page
