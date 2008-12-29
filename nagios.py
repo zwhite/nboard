@@ -137,40 +137,46 @@ def allGroupStatus():
 def groupStatus(group):
     """Returns the aggregated status of a group. 
     """
+    notifications = 1
     status = 0
     for host in hostlist[group]:
-        currentStatus = hostStatus(host)
-        if currentStatus == "2":
-            # FIXME: critical should only show warn or crit if notifications
-            #        are enabled.
-            #if group == 'critical' and service['notifications_enabled'] == "0":
-            #    continue
-            if status < 2: status = 2
+        if group == 'critical':
+            currentStatus, hostNotifications = hostStatus(host, True)
         else:
+            currentStatus, hostNotifications = hostStatus(host)
+        if currentStatus == 2:
+            if status < 2: status = 2
+        elif currentStatus == 1:
             if status < 1: status = 1
-    return status
+        if currentStatus > 1 and hostNotifications:
+            if notifications == 1: notifications = 0
+    return (status, notifications)
 
 
-def hostStatus(host):
-    """Returns the aggregated status of a host. 
+def hostStatus(host, notifications=False):
+    """Returns a tuple containing the aggregated status of the host and whether
+    notifications are enabled.
+
+    If notifications is True it will only return critical for services with
+    notifications enabled.
     """
     if hoststatus[host]['current_state'] == "1":
         # No need to check the services, host is down
-        if hoststatus[host]['notifications_enabled'] == "0":
-            return 1
+        if notifications and hoststatus[host]['notifications_enabled'] == "0":
+            return (2, False)
         else:
-            return 2
+            return (2, True)
     status = 0
     for service in hoststatus[host]['services']:
         service = hoststatus[host]['services'][service]
         if service['current_state'] == "2":
-            if service['notifications_enabled'] == "0":
-                if status < 1: status = 1
-            else:
-                if status < 2: status = 2
+            if status < 2: status = 2
         elif service['current_state'] == "1":
             if status < 1: status = 1
-    return status
+    if service['notifications_enabled'] == "0":
+        return (status, False)
+    else:
+        return (status, True)
 
 
 def permUserWrite(user):
@@ -205,3 +211,9 @@ def relativeTime(timestamp):
     elif timeDiff < 1209603:
         return '%d days ago' % int(timeDiff / 86400)
     return '%d weeks ago' % int(timeDiff / 604800)
+
+if __name__ == '__main__':
+    # Test section
+    #print allGroupStatus()
+    #print 'web:', groupStatus('web')
+    print 'web7.sv2:', hostStatus('web7.sv2')

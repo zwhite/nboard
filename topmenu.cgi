@@ -6,12 +6,8 @@ import nagios
 #print 'Content-Type: application/xhtml+xml\n'
 print 'Content-Type: text/html\n'
 
+# Variables
 HTML = open('templates/basic.html').read()
-
-# Status for this group. Known values:
-# 0 - A-OK
-# 1 - Warning
-# 2 - Critical
 status = nagios.allGroupStatus()
 
 # Generate the page
@@ -20,9 +16,13 @@ grouplist = nagios.grouplist.keys()
 grouplist.sort()
 for group in grouplist:
     group = nagios.grouplist[group]
-    bodytext.append('  <div class="%s">' % nagios.statuses[status[group]])
+    groupstatus, notifications = status[group]
+    if groupstatus > 0 and not notifications:
+        bodytext.append('  <div class="%s">' % nagios.statuses[1])
+    else:
+        bodytext.append('  <div class="%s">' % nagios.statuses[groupstatus])
     bodytext.append('   <a target="menu_f" onclick="top.main_f.location=\'groupoverview.cgi?group=%s\';" style="font-size: +2;" href="menu.cgi?group=%s">' % (group, group))
-    bodytext.append('    <img class="%s" src="%s" />' % (nagios.statuses[status[group]], nagios.icons[group]))
+    bodytext.append('    <img class="%s" src="%s" />' % (nagios.statuses[groupstatus], nagios.icons[group]))
     bodytext.append('    ' + group)
     bodytext.append('   </a>')
     bodytext.append('  </div>')

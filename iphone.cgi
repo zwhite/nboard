@@ -18,8 +18,12 @@ for group in grouplist:
     group = nagios.grouplist[group]
     groupid = re.sub('[^a-zA-Z0-9]', '_', group)
     bodytext.append(' <li>')
-    status = nagios.statuses[nagios.groupStatus(group)]
-    bodytext.append('  <a class="%s" href="#group_%s">' % (status, groupid))
+    status, notifications = nagios.groupStatus(group)
+    if status > 1 and not notifications:
+        sclass = nagios.statuses[1]
+    else:
+        sclass = nagios.statuses[status]
+    bodytext.append('  <a class="%s" href="#group_%s">' % (sclass, groupid))
     s_ok = 0
     s_warn = 0
     s_crit = 0
@@ -54,8 +58,12 @@ for group in grouplist:
     for host in nagios.hostlist[group]:
         hostid = re.sub('[^a-zA-Z0-9]', '_', host)
         bodytext.append(' <li>')
-        status = nagios.statuses[nagios.hostStatus(host)]
-        bodytext.append('  <a class="%s" href="#host_%s">' % (status, hostid))
+        status, notifications = nagios.hostStatus(host)
+        if status > 1 and not notifications:
+            sclass = nagios.statuses[1]
+        else:
+            sclass = nagios.statuses[status]
+        bodytext.append('  <a class="%s" href="#host_%s">' % (sclass, hostid))
         bodytext.append('   %s' % host)
         bodytext.append('  </a>')
         bodytext.append(' </li>')
