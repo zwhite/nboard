@@ -1,4 +1,18 @@
+action.cgi:
+	Finish implementing. This should be able to carry out a number of
+	predefined actions, including sending messages, enabling/disabling
+	host/service notifications, toggling various nagios parameters, etc.
+
+hostrrd.cgi:
+	Fetch the graph.pm from the remote eluna installation and parse it
+	for our purposes. No reason we can't leverage what they're already
+	doing, and it'd make specifying graphs easier.
+
 iphone.cgi:
 	Make this more AJAXy. It takes a while to fetch and render the current
 	output, especially over EDGE. Should only return the overview pages 
 	maybe the groups, and fetch the rest on demand.
+
+reports/nagiosreport.py:
+	This should check some more things. Which hosts have notifications
+	disabled. Has anything gone unacknowledged for more than N hours.
