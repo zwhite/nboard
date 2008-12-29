@@ -1,9 +1,5 @@
 nboard - The Network Dashboard
 
-Note: This project is in the process of being released for public distribution.
-Certain files have not been committed until they can vetted and approved for
-distribution. It it hoped that this disclaimer can be removed before 2009. :)
-
 This project aims to provide a high-level overview of your network, with the 
 capability to drill-down to find problems or indicate that a problem has been 
 reviewed and is being worked on. 
@@ -72,3 +68,17 @@ You should enable authentication in some manor. Most sites will probably use
 .htaccess/.htpasswd. You will not be able to silence alerts or send messages
 unless you log in using an account that matches a contact. (Similar to the
 official nagios interface.)
+
+
+Reports
+-------
+
+The reports directory contains scripts that will report nagios status in a
+format useful for emailing to one or more users. At this time there is only
+a single report.
+
+It is suggested that you setup a cronjob to email this report on a daily
+basis. Something similar to the following should work:
+
+	30 7 * * * /path/to/reports/nagiosreport.py \
+	           | mail -s 'Daily Status Report' ops@example.net
