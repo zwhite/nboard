@@ -15,7 +15,7 @@ hostGraphBaseUrl: http://%s.example.com/rrd/%s/%s.rrd
 # a comma separated list of "host_name"s to include. In a future version this
 # information will be pulled directly from nagios configuration.
 #
-# The number prefix determins order from left to right.
+# The number prefix determines order from left to right.
 [groups]
 1_web:      web1.sv2, web2.sv2, web3.sv2, web4.sv2, web5.sv2
 

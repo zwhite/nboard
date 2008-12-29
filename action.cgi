@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """Performs certain actions on behalf of the user, most of them relating to
-send commands to nagios."""
+sending commands to nagios."""
 
 import cgi, cgitb
 cgitb.enable(logdir="/tmp")

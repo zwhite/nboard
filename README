@@ -39,7 +39,7 @@ Silence Alerts:
 
 This will prompt the user for a message, which will be sent out to contacts
 configured in nagios and displayed on the host overview page. Additionally
-it will silence further alerts on for that service. If you silence alerts
+it will silence further alerts for that service. If you silence alerts
 for a host, all services on that host are silenced as well.
 
 Unsilence Alerts:
@@ -64,7 +64,7 @@ Edit the conf/config.ini and customize the settings for your need. At this
 time you have to explicitly define the machines you wish to display. In the
 future the configuration will be read to determine this information.
 
-You should enable authentication in some manor. Most sites will probably use
+You should enable authentication in some manner. Most sites will probably use
 .htaccess/.htpasswd. You will not be able to silence alerts or send messages
 unless you log in using an account that matches a contact. (Similar to the
 official nagios interface.)

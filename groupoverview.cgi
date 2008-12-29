@@ -15,7 +15,7 @@ bodytext = []
 # Parse the CGI vars
 group = form.getvalue('group')
 if not group:
-    group = 'database'
+    group = 'critical'
 bodytext.append('  <h2>Status for %s Servers</h2>' % group.title())
 bodytext.append('  <table>')
 bodytext.append('   <tr>')
