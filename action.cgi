@@ -7,10 +7,10 @@ cgitb.enable(logdir="/tmp")
 
 form = cgi.FieldStorage()
 
-runMode = form.getvalue('rm')
-host = form.getvalue('commentEntryHost')
-service = form.getvalue('commentEntryService')
-commentText = form.getvalue('commentEntryText')
+runMode = form.getfirst('rm')
+host = form.getfirst('commentEntryHost')
+service = form.getfirst('commentEntryService')
+commentText = form.getfirst('commentEntryText')
 
 if runMode == 'message':
     print 'Content-Type: text/plain\n'

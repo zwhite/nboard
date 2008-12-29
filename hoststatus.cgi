@@ -12,7 +12,7 @@ HTML = open('templates/basic.html').read()
 form = cgi.FieldStorage()
 
 # Parse the CGI vars
-host = form.getvalue('host')
+host = form.getfirst('host')
 hoststatus = nagios.hoststatus[host]
 if 'REMOTE_USER' in os.environ:
     user = os.environ['REMOTE_USER']
@@ -97,7 +97,7 @@ bodytext.append('  </table>')
 if nagios.showHostGraphs:
     printDefaultGraphs=True
     if 'service' in form:
-        service=form.getvalue('service')
+        service=form.getfirst('service')
         if service == 'HTTP':
             printDefaultGraphs=False
             bodytext.append('  <img src="hostrrd.cgi?host=%s&graph=apachestats&width=600&height=200" />' % (hoststatus['host_name']))

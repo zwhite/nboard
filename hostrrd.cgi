@@ -18,35 +18,35 @@ graphs = {
 # Parse our CGI vars
 form = cgi.FieldStorage()
 if 'host' in form:
-    host=form.getvalue('host')
+    host=form.getfirst('host')
 else:
     print 'You must supply a host!'
     sys.exit()
 if 'graph' in form:
-    graph=form.getvalue('graph')
+    graph=form.getfirst('graph')
 else:
     print 'You must supply a graph!'
     sys.exit()
 if 'height' in form:
-    graphHeight=form.getvalue('height')
+    graphHeight=form.getfirst('height')
 else:
     graphHeight=200
 if 'width' in form:
-    graphWidth=form.getvalue('width')
+    graphWidth=form.getfirst('width')
 else:
     graphWidth=600
 if 'start' in form:
-    startTime=int(form.getvalue('start'))
+    startTime=int(form.getfirst('start'))
     endTime=startTime + 86400
 else:
     endTime=int(time.time())
     startTime=endTime - 86400
 if 'end' in form:
-    endTime=int(form.getvalue('end'))
+    endTime=int(form.getfirst('end'))
 startTime_s=time.strftime('%Y-%m-%d %H\:%M\:%S', time.localtime(startTime))
 endTime_s=time.strftime('%Y-%m-%d %H\:%M\:%S', time.localtime(endTime))
 if 'graphlegend' in form:
-    if form.getvalue('graphlegend') == 'false':
+    if form.getfirst('graphlegend') == 'false':
         graphLegend=False
 
 # Fetch the remote RRD

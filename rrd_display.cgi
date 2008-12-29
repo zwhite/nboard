@@ -16,33 +16,27 @@ for section in config.sections():
 # Variables
 form = cgi.FieldStorage()
 if 'datasource' in form:
-    datasource=form.getvalue('datasource')
-    if type(datasource) == type(str()):
-        datasource=[datasource]
+    datasource=form.getlist('datasource')
 else:
     datasource=[]
 if 'area' in form:
-    area=form.getvalue('area')
-    if type(area) == type(str()):
-        area=[area]
+    area=form.getlist('area')
 else:
     area=datasource
 if 'line' in form:
-    line=form.getvalue('line')
-    if type(line) == type(str()):
-        line=[line]
+    line=form.getlist('line')
 else:
     line=[]
-graphHeight=form.getvalue('height')
-graphWidth=form.getvalue('width')
+graphHeight=form.getfirst('height')
+graphWidth=form.getfirst('width')
 if 'start' in form:
-    startTime=int(form.getvalue('start'))
+    startTime=int(form.getfirst('start'))
     endTime=startTime + 86400
 else:
     endTime=int(time.time())
     startTime=endTime - 86400
 if 'end' in form:
-    endTime=int(form.getvalue('end'))
+    endTime=int(form.getfirst('end'))
 
 # Fetch the remote RRD(s)
 rrdfiles = []

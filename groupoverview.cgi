@@ -13,7 +13,7 @@ form = cgi.FieldStorage()
 bodytext = []
 
 # Parse the CGI vars
-group = form.getvalue('group')
+group = form.getfirst('group')
 if not group:
     group = 'critical'
 bodytext.append('  <h2>Status for %s Servers</h2>' % group.title())

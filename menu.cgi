@@ -11,7 +11,7 @@ HTML = open('templates/basic.html').read()
 
 form = cgi.FieldStorage()
 
-group = form.getvalue('group')
+group = form.getfirst('group')
 if not group:
     group = 'web'
 bodytext = []
