@@ -35,7 +35,11 @@ bodytext.append(' <h2><a href="iphone.cgi" target="_blank">iPhone</a></h2>')
 
 # Show the hosts in this current group
 bodytext.append('\n <hr />')
-statusClass = nagios.statuses[nagios.groupStatus(group)[0]]
+groupstatus, notifications = nagios.groupStatus(group)
+if groupstatus > 0 and not notifications:
+    statusClass = nagios.statuses[1]
+else:
+    statusClass = nagios.statuses[groupstatus]
 bodytext.append('\n <h2 class="%s">' % statusClass)
 bodytext.append('  <a target="main_f" href="groupoverview.cgi?group=%s">' % group)
 icon = nagios.icons[group]
