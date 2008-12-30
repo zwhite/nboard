@@ -138,7 +138,7 @@ def allGroupStatus():
 def groupStatus(group):
     """Returns the aggregated status of a group. 
     """
-    notifications = 1
+    notifications = True
     status = 0
     for host in hostlist[group]:
         if group == 'critical':
@@ -149,8 +149,8 @@ def groupStatus(group):
             if status < 2: status = 2
         elif currentStatus == 1:
             if status < 1: status = 1
-        if currentStatus > 1 and hostNotifications:
-            if notifications == 1: notifications = 0
+        if currentStatus > 1 and not hostNotifications:
+            if notifications: notifications = False
     return (status, notifications)
 
 
