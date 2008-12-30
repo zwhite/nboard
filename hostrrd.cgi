@@ -14,6 +14,7 @@ graphs = {
     'mem': '03_mem',
     'process': '04_process',
     'space': '07_space',
+    'apachestats': '08_apachestats',
 }
 
 # Parse our CGI vars
