@@ -32,6 +32,7 @@ for group, list in config.items('icons'):
 statusfile = config.get('general', 'statusfile')
 commandfile = config.get('general', 'commandfile')
 contactsfile = config.get('general', 'contactsfile')
+defaultGroup = config.get('general', 'defaultgroup')
 showHostGraphs = config.getboolean('general', 'showHostGraphs')
 hostGraphBaseUrl = config.get('general', 'hostGraphBaseUrl', True)
 

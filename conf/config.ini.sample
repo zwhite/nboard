@@ -6,6 +6,9 @@ statusfile:     /usr/local/nagios/var/status.dat
 commandfile:    /usr/local/nagios/var/rw/nagios.cmd
 contactsfile:   /usr/local/nagios/etc/contacts.cfg
 
+# Some configuration defaults
+defaultgroup:   critical
+
 # If you wish to display graphs, see the README.graphs file.
 showHostGraphs: false
 # Fixme: Make this easier to figure out

@@ -13,7 +13,7 @@ form = cgi.FieldStorage()
 
 group = form.getfirst('group')
 if not group:
-    group = 'web'
+    group = nagios.defaultGroup
 bodytext = []
 
 # Display the items in extras/
