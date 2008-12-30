@@ -40,7 +40,7 @@ if groupstatus > 0 and not notifications:
     statusClass = nagios.statuses[1]
 else:
     statusClass = nagios.statuses[groupstatus]
-bodytext.append('\n <h2 class="%s">' % statusClass)
+bodytext.append('\n <h2 class="%s list">' % statusClass)
 bodytext.append('  <a target="main_f" href="groupoverview.cgi?group=%s">' % group)
 icon = nagios.icons[group]
 bodytext.append('    <img src="%s" />' % icon)
