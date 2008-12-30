@@ -34,8 +34,6 @@ for host in hostlist:
     if hoststatus['current_state'] == '0':
         currentState = ('statusGood', 'OK')
     elif hoststatus['current_state'] == '1':
-        currentState = ('statusWarn', 'WARNING')
-    elif hoststatus['current_state'] == '2':
         currentState = ('statusCrit', 'CRITICAL')
     bodytext.append('   <tr>')
     bodytext.append('    <td><a href="hoststatus.cgi?host=%s">%s</a></td>' \
