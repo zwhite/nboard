@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import cgi, cgitb, os, sys, tempfile, time, urllib
+import nagios
 cgitb.enable(logdir="/tmp")
 
 # Variables
