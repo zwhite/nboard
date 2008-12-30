@@ -26,7 +26,7 @@ bodytext.append('   </tr>')
 hostlist = nagios.hoststatus.keys()
 hostlist.sort()
 for host in hostlist:
-    if host not in nagios.hostlist[group]: continue
+    if not nagios.inGroup(host, group): continue
     hosttext = host
     hoststatus = nagios.hoststatus[host]
     if hoststatus['notifications_enabled'] == '0':

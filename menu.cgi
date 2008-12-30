@@ -50,7 +50,7 @@ bodytext.append(' </h2>')
 hostlist = nagios.hoststatus.keys()
 hostlist.sort()
 for host in hostlist:
-    if nagios.hoststatus[host]['host_name'] in nagios.hostlist[group]:
+    if nagios.inGroup(host, group):
         current_status = int(nagios.hoststatus[host]['current_state'])
         for service in nagios.hoststatus[host]['services']:
             service = nagios.hoststatus[host]['services'][service]

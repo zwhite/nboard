@@ -12,10 +12,7 @@ status = nagios.allGroupStatus()
 
 # Generate the page
 bodytext = []
-grouplist = nagios.grouplist.keys()
-grouplist.sort()
-for group in grouplist:
-    group = nagios.grouplist[group]
+for group in nagios.grouporder:
     groupstatus, notifications = status[group]
     if groupstatus > 0 and not notifications:
         bodytext.append('  <div class="%s">' % nagios.statuses[1])

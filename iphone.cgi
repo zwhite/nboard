@@ -11,11 +11,8 @@ HTML = open('templates/iphone.html').read()
 bodytext = []
 
 # Generate the main overview page.
-grouplist = nagios.grouplist.keys()
-grouplist.sort()
 bodytext.append('<ul id="groupList" title="Overview" selected="true">')
-for group in grouplist:
-    group = nagios.grouplist[group]
+for group in nagios.grouporder:
     groupid = re.sub('[^a-zA-Z0-9]', '_', group)
     bodytext.append(' <li>')
     status, notifications = nagios.groupStatus(group)
@@ -27,7 +24,7 @@ for group in grouplist:
     s_ok = 0
     s_warn = 0
     s_crit = 0
-    for host in nagios.hostlist[group]:
+    for host in nagios.hostgroups[group]['members']:
         if nagios.hoststatus[host]['current_state'] == '0':
             s_ok += 1
         elif nagios.hoststatus[host]['current_state'] == '1':
@@ -51,11 +48,10 @@ for group in grouplist:
 bodytext.append('</ul>')
 
 # Generate the group overview pages.
-for group in grouplist:
-    group = nagios.grouplist[group]
+for group in nagios.grouporder:
     groupid = re.sub('[^a-zA-Z0-9]', '_', group)
     bodytext.append('<ul id="group_%s" title="%s">' % (groupid, group.title()))
-    for host in nagios.hostlist[group]:
+    for host in nagios.hostgroups[group]['members']:
         hostid = re.sub('[^a-zA-Z0-9]', '_', host)
         bodytext.append(' <li>')
         status, notifications = nagios.hostStatus(host)

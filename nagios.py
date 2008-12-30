@@ -6,39 +6,40 @@ import ConfigParser, sys, time
 
 # Set some variables
 configfile = 'conf/config.ini'
+statuses = ['statusGood', 'statusWarn', 'statusCrit']
+
+# Initialize some dictionaries
+commands = {}
 contacts = {}
 contactgroups = {}
 contactstatus = {}
+hosts = {}
+hostgroups = {}
 hoststatus = {}
 info = {}
 nagiosstatus = {}
-statuses = ['statusGood', 'statusWarn', 'statusCrit']
+services = {}
+timeperiods = {}
 
 # Parse our configuration
 config = ConfigParser.SafeConfigParser()
 config.read(configfile)
-hostlist = {}
-grouplist = {}
-for group, list in config.items('groups'):
-    groupnumber, groupname = group.split('_')
-    groupnumber = int(groupnumber)
-    list = list.replace('\n', '').replace(' ', '').split(',')
-    hostlist[groupname] = list
-    grouplist[groupnumber] = groupname
 icons = {}
 for group, list in config.items('icons'):
     list = list.replace('\n', '').strip()
     icons[group] = list
-statusfile = config.get('general', 'statusfile')
 commandfile = config.get('general', 'commandfile')
-contactsfile = config.get('general', 'contactsfile')
 defaultGroup = config.get('general', 'defaultgroup')
-showHostGraphs = config.getboolean('general', 'showHostGraphs')
+grouporder = config.get('general', 'grouporder')
+grouporder = grouporder.replace('\n', '').replace(' ', '').split(',')
 hostGraphBaseUrl = config.get('general', 'hostGraphBaseUrl', True)
+objectcache = config.get('general', 'objectcache')
+showHostGraphs = config.getboolean('general', 'showHostGraphs')
+statusfile = config.get('general', 'statusfile')
 
-# Parse the contactsfile
-contacts_f = open(contactsfile, 'r').readlines()
-for line in contacts_f:
+# Parse the nagios configuration
+objectcache_f = open(objectcache, 'r').readlines()
+for line in objectcache_f:
     line=line.strip()
     if line == '' or line[0] == '#':
         continue
@@ -46,19 +47,39 @@ for line in contacts_f:
         # Start a new section
         keyword = line.replace('{', '').strip().split()
         if keyword[0] == 'define':
-            if keyword[1] == 'contactgroup':
-                currentsection = {'type': 'contactgroup'}
+            if keyword[1] == 'command':
+                currentsection = {'type': 'command'}
             elif keyword[1] == 'contact':
                 currentsection = {'type': 'contact'}
+            elif keyword[1] == 'contactgroup':
+                currentsection = {'type': 'contactgroup'}
+            elif keyword[1] == 'host':
+                currentsection = {'type': 'host'}
+            elif keyword[1] == 'hostgroup':
+                currentsection = {'type': 'hostgroup'}
+            elif keyword[1] == 'service':
+                currentsection = {'type': 'service'}
+            elif keyword[1] == 'timeperiod':
+                currentsection = {'type': 'timeperiod'}
             else:
                 print 'WARNING: Unknown contact keyword:', keyword[1]
                 currentsection = {'type': 'unknown'}
     elif line == '}':
         # End a section
-        if currentsection['type'] == 'contactgroup':
-            contactgroups[currentsection['contactgroup_name']] = currentsection
+        if currentsection['type'] == 'command':
+            commands[currentsection['command_name']] = currentsection
         elif currentsection['type'] == 'contact':
             contacts[currentsection['contact_name']] = currentsection
+        elif currentsection['type'] == 'contactgroup':
+            contactgroups[currentsection['contactgroup_name']] = currentsection
+        elif currentsection['type'] == 'host':
+            hosts[currentsection['host_name']] = currentsection
+        elif currentsection['type'] == 'hostgroup':
+            hostgroups[currentsection['hostgroup_name']] = currentsection
+        elif currentsection['type'] == 'service':
+            services[currentsection['service_description']] = currentsection
+        elif currentsection['type'] == 'timeperiod':
+            timeperiods[currentsection['timeperiod_name']] = currentsection
     else:
         # Parse a value in the current section
         var, value = line.split(None, 1)
@@ -66,7 +87,8 @@ for line in contacts_f:
             currentsection[var] = value.split(',')
         else:
             currentsection[var] = value
-    
+
+
 # Parse the nagios status
 status_f = open(statusfile, 'r').readlines()
 for line in status_f:
@@ -130,7 +152,7 @@ for line in status_f:
 # Useful functions
 def allGroupStatus():
     status = {}
-    for group in hostlist:
+    for group in grouporder:
         status[group] = groupStatus(group)
     return status
 
@@ -140,7 +162,7 @@ def groupStatus(group):
     """
     notifications = True
     status = 0
-    for host in hostlist[group]:
+    for host in hostgroups[group]['members']:
         if group == 'critical':
             currentStatus, hostNotifications = hostStatus(host, True)
         else:
@@ -180,6 +202,12 @@ def hostStatus(host, notifications=False):
         return (status, True)
 
 
+def inGroup(host, hostgroup):
+    "Returns true if the supplied host is in the supplied hostgroup."
+    if host in hostgroups[hostgroup]['members']:
+        return True
+    return False
+
 def permUserWrite(user):
     "Returns true if the supplied user is allowed to perform write operations."
     if user in contacts:
@@ -217,4 +245,8 @@ if __name__ == '__main__':
     # Test section
     #print allGroupStatus()
     #print 'web:', groupStatus('web')
-    print 'web7.sv2:', hostStatus('web7.sv2')
+    #print 'web7.sv2:', hostStatus('web7.sv2')
+    #for group in grouporder:
+    #    print group
+    #print hostgroups.keys()
+    print inGroup('web1.sv2', 'criticalpath')
