@@ -15,7 +15,7 @@ bodytext = []
 # Parse the CGI vars
 group = form.getfirst('group')
 if not group:
-    group = 'critical'
+    group = nagios.defaultGroup
 bodytext.append('  <h2>Status for %s Servers</h2>' % group.title())
 bodytext.append('  <table>')
 bodytext.append('   <tr>')
