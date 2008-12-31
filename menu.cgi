@@ -16,6 +16,10 @@ if not group:
     group = nagios.defaultGroup
 bodytext = []
 
+# Welcome the user
+bodytext.append('<h5>Welcome %s!</h5>' % nagios.user)
+bodytext.append('<hr />')
+
 # Display the items in extras/
 extraList = glob.glob('extras/*')
 extraList.sort()
