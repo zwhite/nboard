@@ -17,7 +17,7 @@ if not group:
 bodytext = []
 
 # Welcome the user
-bodytext.append('<h5>%s</h5>' % nagios.user)
+bodytext.append('<h1><img src="images/nboard_64.png" /></h1>')
 bodytext.append('<hr />')
 
 # Display the items in extras/
