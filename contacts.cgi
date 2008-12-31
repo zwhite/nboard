@@ -46,9 +46,9 @@ for contact in contactlist:
     lasthostnotify = int(contact['status']['last_host_notification'])
     lastservicenotify = int(contact['status']['last_service_notification'])
     if lasthostnotify > lastservicenotify:
-        lastnotification = time.ctime(lasthostnotify)
+        lastnotification = nagios.relativeTime(lasthostnotify)
     else:
-        lastnotification = time.ctime(lastservicenotify)
+        lastnotification = nagios.relativeTime(lastservicenotify)
     bodytext.append('   <tr>')
     bodytext.append('    <td><p>%s</p></td>' % contact['alias'])
     bodytext.append('    <td><p>%s</p></td>' % pager)
