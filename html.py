@@ -17,10 +17,14 @@ def iconNotify(type, target, title='', enabled=True):
             returnstr = imgstr % (icon, title, 'return false;')
         elif type == 'global':
             returnstr = imgstr % (icon, title, 'return false;')
-        elif type == 'host':
-            returnstr = imgstr % (icon, title, 'return false;')
         elif type == 'service':
-            returnstr = imgstr % (icon, title, 'return false;')
+            if enabled:
+                js = "disableAlerts('%s', '%s');" % (target, title)
+                title = 'Disable alerts for %s on %s' % (title, target)
+            else:
+                js = "disableAlerts('%s', '%s');" % (target, title)
+                title = 'Enable alerts for %s on %s' % (title, target)
+            returnstr = imgstr % (icon, title, js)
     else:
         returnstr = imgstr % (icon, '', 'return false;')
     return returnstr
