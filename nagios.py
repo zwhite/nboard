@@ -158,9 +158,10 @@ def allGroupStatus():
 
 
 def groupStatus(group):
-    """Returns the aggregated status of a group. 
+    """Returns a tuple containing the aggregated status of a group and whether
+    notifications are enabled for anything marked critical. 
     """
-    notifications = True
+    notifications = False
     status = 0
     if 'members' not in hostgroups[group]:
         return (0, False)
@@ -173,8 +174,8 @@ def groupStatus(group):
             if status < 2: status = 2
         elif currentStatus == 1:
             if status < 1: status = 1
-        if currentStatus > 1 and not hostNotifications:
-            if notifications: notifications = False
+        if currentStatus > 1 and hostNotifications:
+            if notifications: notifications = True
     return (status, notifications)
 
 
@@ -246,7 +247,7 @@ def relativeTime(timestamp):
 if __name__ == '__main__':
     # Test section
     #print allGroupStatus()
-    print groupStatus('noncritical')
+    print groupStatus('database')
     #print 'web:', groupStatus('web')
     #print 'web7.sv2:', hostStatus('web7.sv2')
     #for group in grouporder:
