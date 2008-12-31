@@ -2,11 +2,15 @@
 """Parse the nagios status.dat file to get the status of certain services."""
 
 # FIXME: This should probably build an object that can be instaniated instead.
-import ConfigParser, sys, time
+import ConfigParser, os, sys, time
 
 # Set some variables
 configfile = 'conf/config.ini'
 statuses = ['statusGood', 'statusWarn', 'statusCrit']
+if 'REMOTE_USER' in os.environ:
+    user = os.environ['REMOTE_USER']
+else:
+    user = 'guest'
 
 # Initialize some dictionaries
 commands = {}
@@ -226,7 +230,7 @@ def inGroup(host, hostgroup):
         return True
     return False
 
-def permUserWrite(user):
+def permUserWrite(user=user):
     "Returns true if the supplied user is allowed to perform write operations."
     if user in contacts:
         return True

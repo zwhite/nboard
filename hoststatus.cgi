@@ -2,7 +2,7 @@
 """Displays the status for a host."""
 
 import cgi, cgitb, os, sys, urllib
-import nagios
+import html, nagios
 cgitb.enable(logdir="/tmp")
 
 print 'Content-Type: text/html\n'
@@ -14,10 +14,6 @@ form = cgi.FieldStorage()
 # Parse the CGI vars
 host = form.getfirst('host')
 hoststatus = nagios.hoststatus[host]
-if 'REMOTE_USER' in os.environ:
-    user = os.environ['REMOTE_USER']
-else:
-    user = 'guest'
 
 # Setup the page
 bodytext = []
@@ -28,7 +24,7 @@ if 'comment' in hoststatus:
             bodytext.append('<h3>%s: %s (%s)</h3>' % (comment['author'].split()[0], comment['comment_data'], comment['source']))
 
 # Print the comment entry field, when appropriate
-if nagios.permUserWrite(user):
+if nagios.permUserWrite():
     # Use display:none here because otherwise certain browsers (webkit)
     # will require two clicks to show.
     bodytext.append('  <div style="display: none;" id="commentEntryBox">')
@@ -49,14 +45,10 @@ bodytext.append('    <th>Service</th>')
 bodytext.append('    <th>Status</th>')
 bodytext.append('    <th>Last OK</th>')
 bodytext.append('    <th>Status Information</th>')
-if nagios.permUserWrite(user):
-    bodytext.append('    <th>')
-    bodytext.append('     <img class="icon" onclick="sendMessage(\'%s\', \'host\');" src="images/comment.gif" title="Send Message About %s" />' % (host, host))
-    if hoststatus['notifications_enabled'] == '0':
-        bodytext.append('     <img class="icon" onclick="enableAlerts(\'%s\', \'all alerts\');" src="images/ndisabled.gif" title="Enable Notifications for %s" />' % (host, host))
-    else:
-        bodytext.append('     <img class="icon" onclick="disableAlerts(\'%s\', \'all alerts\');" src="images/notify.gif" title="Disable Notifications for %s" />' % (host, host))
-    bodytext.append('    </th>')
+if hoststatus['notifications_enabled'] == '0':
+    bodytext.append('     <th>%s</th>' % html.iconNotify('service', host, 'all alerts', False))
+else:
+    bodytext.append('     <th>%s</th>' % html.iconNotify('service', host, 'all alerts', True))
 bodytext.append('   </tr>')
 for service in hoststatus['services']:
     service = hoststatus['services'][service]
@@ -64,9 +56,9 @@ for service in hoststatus['services']:
 
     sendMessage = '<img class="icon" onclick="sendMessage(\'%s\', \'%s\');" src="images/comment.gif" title="Send Message About %s on %s" />' % (host, description, host, description)
     if service['notifications_enabled'] == '0':
-        notifications = '<img class="icon" onclick="enableAlerts(\'%s\', \'%s\');" src="images/ndisabled.gif" title="Enable Notifications on %s for %s" />' % (host, description, host, description)
+        notifications = html.iconNotify('service', host, description, False)
     else:
-            notifications = '<img class="icon" onclick="disableAlerts(\'%s\', \'%s\');" src="images/notify.gif" title="Disable notifications on %s for %s" />' % (host, description, host, description)
+        notifications = html.iconNotify('service', host, description, True)
     if service['current_state'] == '0':
         currentState = ('statusGood', 'OK')
     elif service['current_state'] == '1':
@@ -85,11 +77,11 @@ for service in hoststatus['services']:
     bodytext.append('    <td class="%s narrow">%s</td>' % currentState)
     bodytext.append('    <td class="timestamp"><p>%s</p></td>' % lastTimeOK)
     bodytext.append('    <td><p>%s</p></td>' % pluginOutput)
-    if nagios.permUserWrite(user):
-        bodytext.append('    <td>')
+    bodytext.append('    <td>')
+    if nagios.permUserWrite():
         bodytext.append('     ' + sendMessage)
-        bodytext.append('     ' + notifications)
-        bodytext.append('    </td>')
+    bodytext.append('     ' + notifications)
+    bodytext.append('    </td>')
     bodytext.append('   </tr>')
 bodytext.append('  </table>')
 
