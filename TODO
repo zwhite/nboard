@@ -17,7 +17,6 @@ reports/nagiosreport.py:
 	This should check some more things. Which hosts have notifications
 	disabled. Has anything gone unacknowledged for more than N hours.
 
-nagios.py:
-	Parse the entire nagios configuration. This will give us metadata about 
-	hosts and services, and let us use the nagios definition of groups 
-	rather than defining it ourselves.
+main.js:
+	Write function to handle enabling and disabling notifications for
+	contacts, as used by contacts.py.
