@@ -14,9 +14,21 @@ def iconNotify(type, target, title='', enabled=True):
         icon = 'images/ndisabled.gif'
     if nagios.permUserWrite():
         if type == 'contact':
-            returnstr = imgstr % (icon, title, 'return false;')
+            if enabled:
+                js = "disableContactAlerts('%s');" % (target)
+                title = 'Disable alerts for %s' % (target)
+            else:
+                js = "disableContactAlerts('%s');" % (target)
+                title = 'Disable alerts for %s' % (target)
+            returnstr = imgstr % (icon, title, js)
         elif type == 'global':
-            returnstr = imgstr % (icon, title, 'return false;')
+            if enabled:
+                js = "disableContactAlerts('nagios');"
+                title = 'Disable ALL alerts'
+            else:
+                js = "enableContactAlerts('nagios');"
+                title = 'Enable ALL alerts'
+            returnstr = imgstr % (icon, title, js)
         elif type == 'service':
             if enabled:
                 js = "disableAlerts('%s', '%s');" % (target, title)
