@@ -251,6 +251,9 @@ def pluginOutput(service, output):
 
 
 def relativeTime(timestamp):
+    if timestamp < 315532800:
+        # Anything before 1980 might as well have been never.
+        return 'never'
     timeDiff = time.time() - timestamp
     minAgo = int(timeDiff / 60)
     if timeDiff < 3601:
