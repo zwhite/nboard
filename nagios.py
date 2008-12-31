@@ -162,6 +162,8 @@ def groupStatus(group):
     """
     notifications = True
     status = 0
+    if 'members' not in hostgroups[group]:
+        return (0, False)
     for host in hostgroups[group]['members']:
         if group == 'critical':
             currentStatus, hostNotifications = hostStatus(host, True)
@@ -244,9 +246,10 @@ def relativeTime(timestamp):
 if __name__ == '__main__':
     # Test section
     #print allGroupStatus()
+    print groupStatus('noncritical')
     #print 'web:', groupStatus('web')
     #print 'web7.sv2:', hostStatus('web7.sv2')
     #for group in grouporder:
     #    print group
     #print hostgroups.keys()
-    print inGroup('web1.sv2', 'criticalpath')
+    #print inGroup('web1.sv2', 'criticalpath')
