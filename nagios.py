@@ -12,12 +12,9 @@ statuses = ['statusGood', 'statusWarn', 'statusCrit']
 commands = {}
 contacts = {}
 contactgroups = {}
-contactstatus = {}
 hosts = {}
 hostgroups = {}
 hoststatus = {}
-info = {}
-nagiosstatus = {}
 services = {}
 timeperiods = {}
 
@@ -123,7 +120,7 @@ for line in status_f:
             info = currentsection
         elif currentsection['type'] == 'contactstatus':
             contacts[currentsection['contact_name']]['status'] = currentsection
-        elif currentsection['type'] == 'nagiosstatus':
+        elif currentsection['type'] == 'programstatus':
             programstatus = currentsection
         elif currentsection['type'] == 'host':
             host = currentsection['host_name']
@@ -265,10 +262,11 @@ def relativeTime(timestamp):
 if __name__ == '__main__':
     # Test section
     #print allGroupStatus()
-    print groupStatus('database')
+    #print groupStatus('database')
     #print 'web:', groupStatus('web')
     #print 'web7.sv2:', hostStatus('web7.sv2')
     #for group in grouporder:
     #    print group
     #print hostgroups.keys()
     #print inGroup('web1.sv2', 'criticalpath')
+    print programstatus
