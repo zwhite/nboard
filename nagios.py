@@ -30,8 +30,11 @@ for group, list in config.items('icons'):
     icons[group] = list
 commandfile = config.get('general', 'commandfile')
 defaultGroup = config.get('general', 'defaultgroup')
-grouporder = config.get('general', 'grouporder')
-grouporder = grouporder.replace('\n', '').replace(' ', '').split(',')
+try:
+    grouporder = config.get('general', 'grouporder')
+    grouporder = grouporder.replace('\n', '').replace(' ', '').split(',')
+except ConfigParser.NoOptionError:
+    grouporder = []
 hostGraphBaseUrl = config.get('general', 'hostGraphBaseUrl', True)
 objectcache = config.get('general', 'objectcache')
 showHostGraphs = config.getboolean('general', 'showHostGraphs')
@@ -149,12 +152,27 @@ for line in status_f:
         currentsection[var] = value
 
 
+# Check over everything, make sure it looks sane
+if grouporder == []:
+    for group in hostgroups:
+        if group[:6] != 'check_':
+		grouporder.append(group)
+    grouporder.sort()
+
+
 # Useful functions
 def allGroupStatus():
     status = {}
     for group in grouporder:
         status[group] = groupStatus(group)
     return status
+
+
+def getGroupIcon(group):
+    """Returns the icon URI for a group."""
+    if group in icons:
+        return icons[group]
+    return 'images/nboard_24.png'
 
 
 def groupStatus(group):

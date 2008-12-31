@@ -6,8 +6,13 @@ objectcache: /usr/local/nagios/var/objects.cache
 statusfile:  /usr/local/nagios/var/status.dat
 commandfile: /usr/local/nagios/var/rw/nagios.cmd
 
-# The groups you want displayed, and in which order
-grouporder: critical, web
+# If you want to display only certain groups, or you wish for them to be 
+# displayed in a particular order, uncomment this line.
+#
+# If left blank or missing every nagios hostgroup will be displayed except
+# for those which start with "check_". This allows you to define groups used
+# to apply service checks and have them filtered out by nboard.
+#grouporder: critical, web
 
 # Some configuration defaults
 defaultgroup: critical
@@ -18,6 +23,9 @@ hostGraphBaseUrl: http://%s.example.com/rrd/%s/%s.rrd
 
 # 24x24 icons work well here. You can use larger icons by adjusting the 
 # index.html frame spacing.
+#
+# If a group doesn't have an icon specified here it will get a generic
+# icon.
 [icons]
 web: images/website.png
 critical: images/nboard_24.png

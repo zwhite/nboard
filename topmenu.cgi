@@ -19,7 +19,7 @@ for group in nagios.grouporder:
     else:
         bodytext.append('  <div class="%s">' % nagios.statuses[groupstatus])
     bodytext.append('   <a target="menu_f" onclick="top.main_f.location=\'groupoverview.cgi?group=%s\';" style="font-size: +2;" href="menu.cgi?group=%s">' % (group, group))
-    bodytext.append('    <img src="%s" />' % nagios.icons[group])
+    bodytext.append('    <img src="%s" />' % nagios.getGroupIcon(group))
     bodytext.append('    ' + group)
     bodytext.append('   </a>')
     bodytext.append('  </div>')
