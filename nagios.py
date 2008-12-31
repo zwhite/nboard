@@ -194,7 +194,7 @@ def groupStatus(group):
         elif currentStatus == 1:
             if status < 1: status = 1
         if currentStatus > 1 and hostNotifications:
-            if notifications: notifications = True
+            if not notifications: notifications = True
     return (status, notifications)
 
 
@@ -212,16 +212,19 @@ def hostStatus(host, notifications=False):
         else:
             return (2, True)
     status = 0
+    notifications = False
     for service in hoststatus[host]['services']:
         service = hoststatus[host]['services'][service]
         if service['current_state'] == "2":
             if status < 2: status = 2
+            if service['notifications_enabled'] == "1":
+                notifications = True
         elif service['current_state'] == "1":
             if status < 1: status = 1
-    if service['notifications_enabled'] == "0":
-        return (status, False)
-    else:
+    if status > 1 and notifications:
         return (status, True)
+    else:
+        return (status, False)
 
 
 def inGroup(host, hostgroup):
@@ -270,10 +273,10 @@ if __name__ == '__main__':
     # Test section
     #print allGroupStatus()
     #print groupStatus('database')
-    #print 'web:', groupStatus('web')
-    #print 'web7.sv2:', hostStatus('web7.sv2')
+    print 'database:', groupStatus('database')
+    print 'apollo.ve:', hostStatus('apollo.ve')
     #for group in grouporder:
     #    print group
     #print hostgroups.keys()
     #print inGroup('web1.sv2', 'criticalpath')
-    print programstatus
+    #print programstatus
