@@ -72,8 +72,8 @@ for host in nagios.hoststatus:
     for service in nagios.hoststatus[host]['services']:
         serviceid = re.sub('[^a-zA-Z0-9]', '_', service)
         service = nagios.hoststatus[host]['services'][service]
-        bodytext.append(' <li class="%s">' % status)
         status = nagios.statuses[int(service['current_state'])]
+        bodytext.append(' <li class="%s">' % status)
         bodytext.append('  %s' % service['service_description'])
         bodytext.append(' </li>')
     bodytext.append('</ul>')
