@@ -16,19 +16,19 @@ if runMode == 'message':
     print 'Content-Type: text/plain\n'
     print 'Send a message'
 elif runMode == 'silence':
-    if service != 'all alerts':
-        print 'Content-Type: text/plain\n'
-        print 'Silence single service'
-    else:
+    if service == 'all services':
         print 'Content-Type: text/plain\n'
         print 'Silence all services'
-elif runMode == 'unsilence':
-    if service != 'all alerts':
-        print 'Content-Type: text/plain\n'
-        print 'Unsilence a single service'
     else:
         print 'Content-Type: text/plain\n'
+        print 'Silence single service'
+elif runMode == 'unsilence':
+    if service == 'all services':
+        print 'Content-Type: text/plain\n'
         print 'Unsilence all services'
+    else:
+        print 'Content-Type: text/plain\n'
+        print 'Unsilence a single service'
 else:
     print 'Status: 400 Unknown runmode'
     print 'Content-Type: text/plain\n'

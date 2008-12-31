@@ -46,9 +46,9 @@ bodytext.append('    <th>Status</th>')
 bodytext.append('    <th>Last OK</th>')
 bodytext.append('    <th>Status Information</th>')
 if hoststatus['notifications_enabled'] == '0':
-    bodytext.append('     <th>%s</th>' % html.iconNotify('service', host, 'all alerts', False))
+    bodytext.append('     <th>%s</th>' % html.iconNotify('service', host, 'all services', False))
 else:
-    bodytext.append('     <th>%s</th>' % html.iconNotify('service', host, 'all alerts', True))
+    bodytext.append('     <th>%s</th>' % html.iconNotify('service', host, 'all services', True))
 bodytext.append('   </tr>')
 for service in hoststatus['services']:
     service = hoststatus['services'][service]
