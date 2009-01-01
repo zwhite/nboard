@@ -1,14 +1,9 @@
-/* Used to show the comment box so that a service or host can be silenced.
- */
-
-function showForm() {
-	document.getElementById('commentEntryBox').style.display = 'block';
-}
-
 function changeForm(host, service, runmode, title) {
+	var commentBox = document.getElementById('commentEntryBox');
 	var commentHost = document.getElementById('commentEntryHost');
 	var commentService = document.getElementById('commentEntryService');
 	var commentReason = document.getElementById('commentEntryReason');
+	var commentText = document.getElementById('commentEntryText');
 	var commentRM = document.getElementById('rm');
 	var titleNode = document.createTextNode(title);
 
@@ -17,6 +12,8 @@ function changeForm(host, service, runmode, title) {
 	commentRM.setAttribute('value', runmode);
 	commentReason.removeChild(commentReason.childNodes[0]);
 	commentReason.appendChild(titleNode);
+	commentBox.style.display = 'block';
+	commentText.focus();
 }
 
 function disableAlerts(host, service) {
@@ -40,42 +37,3 @@ function sendMessage(host, service) {
 	changeForm(host, service, 'message', title);
 	showForm();
 }
-
-/* Quick-n-dirty javascript to do some xmlhttprequest magic. This could be
- * abstracted out better but it'd take more time. Quick hack FTW!
- *
- * This isn't currently being used in the dashboard.
- */
-
-var liveUpdateReq;
-
-if (window.XMLHttpRequest) {
-        liveUpdateReq = new XMLHttpRequest();
-}
-
-function loadBodyText(url,target) {
-        if (window.XMLHttpRequest) {
-                // branch for IE/Windows ActiveX version
-        } else if (window.ActiveXObject) {
-                liveUpdateReq = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-
-        liveUpdateReq.target = target;
-        liveUpdateReq.onreadystatechange=showStatusForUpdatedField;
-        liveUpdateReq.open("GET", url);
-        liveUpdateReq.send(null);
-}
-
-function showStatusForUpdatedField() {
-        if (liveUpdateReq.readyState == 4) {
-                document.getElementById(liveUpdateReq.target).innerHTML = liveUpdateReq.responseText;
-        }
-}
-
-function contentLoadingLoop() {
-        loadBodyText('list.cgi','graphList');
-        /* In 5 minutes, reload the table */
-        setTimeout('contentLoadingLoop()', 5*60000);
-}
-
-/*window.onload = contentLoadingLoop;*/
