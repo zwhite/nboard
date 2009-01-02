@@ -56,9 +56,11 @@ hostlist.sort()
 for host in hostlist:
     if nagios.inGroup(host, group):
         current_status = int(nagios.hoststatus[host]['current_state'])
+	if current_status > 2: current_status=2
         for service in nagios.hoststatus[host]['services']:
             service = nagios.hoststatus[host]['services'][service]
             service_status=int(service['current_state'])
+	    if service_status > 2: service_status=2
             if service_status > current_status:
                 current_status = service_status
         bodytext.append('  <a class="%s list" target="main_f" href="hoststatus.cgi?host=%s"><img src="%s" /> %s</a>' % (nagios.statuses[current_status], host, nagios.getGroupIcon(group), host))

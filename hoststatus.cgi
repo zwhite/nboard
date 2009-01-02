@@ -63,7 +63,7 @@ for service in hoststatus['services']:
         currentState = ('statusGood', 'OK')
     elif service['current_state'] == '1':
         currentState = ('statusWarn', 'WARNING')
-    elif service['current_state'] == '2':
+    else:
         currentState = ('statusCrit', 'CRITICAL')
     lastTimeOK = nagios.relativeTime(int(service['last_time_ok']))
     pluginOutput = nagios.pluginOutput(description,service['plugin_output'])

@@ -50,7 +50,7 @@ for host in hostlist:
             currentState = ('statusGood')
         elif service['current_state'] == '1':
             currentState = ('statusWarn')
-        elif service['current_state'] == '2':
+        else:
             currentState = ('statusCrit')
         bodytext.append('       <td class="%s">' % currentState)
         bodytext.append('        <a href="hoststatus.cgi?host=%s&service=%s">' \
