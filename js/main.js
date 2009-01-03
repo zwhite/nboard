@@ -26,8 +26,8 @@ function enableAlerts(host, service) {
 	var commentForm = document.getElementById('commentEntryForm');
 	var confirmation = 'Are you sure you wish to enable alerts for ' + service + ' on ' + host + '?\n\nThis action will also clear the status message!';
 
-	changeForm(host, service, 'unsilence', '');
 	if (confirm(confirmation)) {
+		changeForm(host, service, 'unsilence', '');
 		commentForm.submit();
 	}
 }
