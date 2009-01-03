@@ -9,14 +9,14 @@ print 'Content-Type: text/html\n'
 
 HTML = open('templates/basic.html').read()
 
+# Parse our parameters
 form = cgi.FieldStorage()
-
 group = form.getfirst('group')
 if not group:
     group = nagios.defaultGroup
-bodytext = []
 
-# Welcome the user
+# Setup the page
+bodytext = []
 bodytext.append('<h1><img src="images/nboard_64.png" /></h1>')
 bodytext.append('<hr />')
 
