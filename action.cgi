@@ -7,6 +7,7 @@ import nagios
 cgitb.enable(logdir="/tmp")
 
 form = cgi.FieldStorage()
+HTML = open('templates/basic.html').read()
 
 def nagiosCmd(cmd, cmdargs):
     """Send a command to nagios."""
@@ -28,24 +29,39 @@ if runMode == 'message':
     else:
         nagiosCmd('SEND_CUSTOM_SVC_NOTIFICATION', '%s;%s;2;%s;%s' % 
           (host, service, nagios.user, commentText))
-    print 'Location: hoststatus.cgi?host=%s&service=%s\n' % (host, service)
 elif runMode == 'silence':
     if service == 'all services':
-        print 'Content-Type: text/plain\n'
-        print 'Silence all services'
+        nagiosCmd('ADD_HOST_COMMENT', '%s;1;%s;%s' % 
+          (host, nagios.contacts[nagios.user]['alias'], commentText))
+        nagiosCmd('SEND_CUSTOM_HOST_NOTIFICATION', '%s;2;%s;%s' % 
+          (host, nagios.user, 'Host alerts disabled: ' + commentText))
+        nagiosCmd('DISABLE_HOST_SVC_NOTIFICATIONS', host)
+        nagiosCmd('DISABLE_HOST_NOTIFICATIONS', host)
     else:
-        print 'Content-Type: text/plain\n'
-        print 'Silence single service'
+        nagiosCmd('ADD_SVC_COMMENT', '%s;%s;1;%s;%s' % 
+          (host, service, nagios.contacts[nagios.user]['alias'], commentText))
+        nagiosCmd('SEND_CUSTOM_SVC_NOTIFICATION', '%s;%s;2;%s;%s' % 
+          (host, service, nagios.user, 'Service alerts disabled: '+commentText))
+        nagiosCmd('DISABLE_SVC_NOTIFICATIONS', '%s;%s' % (host, service))
 elif runMode == 'unsilence':
     if service == 'all services':
-        print 'Content-Type: text/plain\n'
-        print 'Unsilence all services'
+        nagiosCmd('SEND_CUSTOM_HOST_NOTIFICATION', '%s;2;%s;%s' % 
+          (host, nagios.user, 'Host and Service alerts enabled.'))
+        nagiosCmd('ENABLE_HOST_SVC_NOTIFICATIONS', host)
+        nagiosCmd('ENABLE_HOST_NOTIFICATIONS', host)
+        nagiosCmd('DEL_ALL_HOST_COMMENTS', '%s;%s' % (host, service))
     else:
-        print 'Content-Type: text/plain\n'
-        print 'Unsilence a single service'
+        nagiosCmd('SEND_CUSTOM_SVC_NOTIFICATION', '%s;%s;2;%s;%s' % 
+          (host, service, nagios.user, 'Service alerts enabled.'))
+        nagiosCmd('ENABLE_SVC_NOTIFICATIONS', '%s;%s' % (host, service))
+        nagiosCmd('DEL_ALL_SVC_COMMENTS', '%s;%s' % (host, service))
 else:
     print 'Status: 400 Unknown runmode'
     print 'Content-Type: text/plain\n'
     print 'Unknown runmode!'
+    sys.exit()
 
-print 'Note: This script needs to be implemented completely still.'
+print 'Content-Type: text/html\n'
+print HTML % {'refresh': 3000, 'body': '<p>Command submitted. It may take a moment to show up.</p>'}
+#time.sleep(2) # Give nagios a chance to perform the command
+#print 'Location: hoststatus.cgi?host=%s&service=%s\n' % (host, service)
