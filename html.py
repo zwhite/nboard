@@ -18,8 +18,8 @@ def iconNotify(type, target, title='', enabled=True):
                 js = "disableContactAlerts('%s');" % (target)
                 title = 'Disable alerts for %s' % (target)
             else:
-                js = "disableContactAlerts('%s');" % (target)
-                title = 'Disable alerts for %s' % (target)
+                js = "enableContactAlerts('%s');" % (target)
+                title = 'Enable alerts for %s' % (target)
             returnstr = imgstr % (icon, title, js)
         elif type == 'global':
             if enabled:
@@ -34,7 +34,7 @@ def iconNotify(type, target, title='', enabled=True):
                 js = "disableAlerts('%s', '%s');" % (target, title)
                 title = 'Disable alerts for %s on %s' % (title, target)
             else:
-                js = "disableAlerts('%s', '%s');" % (target, title)
+                js = "enableAlerts('%s', '%s');" % (target, title)
                 title = 'Enable alerts for %s on %s' % (title, target)
             returnstr = imgstr % (icon, title, js)
     else:
