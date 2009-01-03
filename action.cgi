@@ -2,19 +2,33 @@
 """Performs certain actions on behalf of the user, most of them relating to
 sending commands to nagios."""
 
-import cgi, cgitb
+import cgi, cgitb, time
+import nagios
 cgitb.enable(logdir="/tmp")
 
 form = cgi.FieldStorage()
 
+def nagiosCmd(cmd, cmdargs):
+    """Send a command to nagios."""
+    cmdFile = open(nagios.commandfile, 'a')
+    ts = int(time.time())
+    cmdFile.write('[%d] %s;%s\n' % (ts, cmd, cmdargs))
+
+
+# Collect our CGI vars
 runMode = form.getfirst('rm')
 host = form.getfirst('commentEntryHost')
 service = form.getfirst('commentEntryService')
 commentText = form.getfirst('commentEntryText')
 
 if runMode == 'message':
-    print 'Content-Type: text/plain\n'
-    print 'Send a message'
+    if service == 'all services':
+        nagiosCmd('SEND_CUSTOM_HOST_NOTIFICATION', '%s;2;%s;%s' % 
+          (host, nagios.user, commentText))
+    else:
+        nagiosCmd('SEND_CUSTOM_SVC_NOTIFICATION', '%s;%s;2;%s;%s' % 
+          (host, service, nagios.user, commentText))
+    print 'Location: hoststatus.cgi?host=%s&service=%s\n' % (host, service)
 elif runMode == 'silence':
     if service == 'all services':
         print 'Content-Type: text/plain\n'

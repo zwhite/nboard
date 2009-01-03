@@ -5,7 +5,11 @@
 import ConfigParser, os, sys, time
 
 # Set some variables
-configfile = 'conf/config.ini'
+if __file__[0] == '/':
+    basedir = os.path.dirname(__file__)
+else:
+    basedir = os.getcwd()
+configfile = os.path.join(basedir + '/conf/config.ini')
 statuses = ['statusGood', 'statusWarn', 'statusCrit']
 if 'REMOTE_USER' in os.environ:
     user = os.environ['REMOTE_USER']
@@ -240,17 +244,17 @@ def permUserWrite(user=user):
     return False
 
 
-def pluginOutput(service, output):
-    """Returns a copy of output formatted for inclusion in an HTML document."""
+def pluginOutput(service, output, separator='<br />'):
+    """Returns a copy of output formatted for human readability."""
     if service == 'All Disks':
         disks = output.split(':')
-        return '<br />'.join(disks)
+        return separator.join(disks)
     elif service == 'MySQL':
         lines = output.split('  ')
-        return '<br />'.join(lines)
+        return separator.join(lines)
     else:
         lines = output.split(' - ')
-        return '<br />'.join(lines)
+        return separator.join(lines)
 
 
 def relativeTime(timestamp):
@@ -273,10 +277,10 @@ if __name__ == '__main__':
     # Test section
     #print allGroupStatus()
     #print groupStatus('database')
-    print 'database:', groupStatus('database')
-    print 'apollo.ve:', hostStatus('apollo.ve')
+    #print 'database:', groupStatus('database')
+    #print 'apollo.ve:', hostStatus('apollo.ve')
     #for group in grouporder:
     #    print group
     #print hostgroups.keys()
-    #print inGroup('web1.sv2', 'criticalpath')
+    print inGroup('web1.sv2', 'critical')
     #print programstatus
