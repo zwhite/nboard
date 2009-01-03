@@ -1,7 +1,6 @@
 action.cgi:
-	Finish implementing. This should be able to carry out a number of
-	predefined actions, including sending messages, enabling/disabling
-	host/service notifications, toggling various nagios parameters, etc.
+	Implement functionality for enabling and disabling notifications
+	globally and for contacts.
 
 hostrrd.cgi:
 	Fetch the graph.pm from the remote eluna installation and parse it
