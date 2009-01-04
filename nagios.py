@@ -24,6 +24,7 @@ hosts = {}
 hostgroups = {}
 hoststatus = {}
 services = {}
+servicegroups = {}
 timeperiods = {}
 
 # Parse our configuration
@@ -44,6 +45,13 @@ hostGraphBaseUrl = config.get('general', 'hostGraphBaseUrl', True)
 objectcache = config.get('general', 'objectcache')
 showHostGraphs = config.getboolean('general', 'showHostGraphs')
 statusfile = config.get('general', 'statusfile')
+sms = None
+if config.has_section('clickatell_sms'):
+    sms = {
+        'api_id': config.get('clickatell_sms', 'api_id'),
+        'username': config.get('clickatell_sms', 'user'),
+        'password': config.get('clickatell_sms', 'password')
+    }
 
 # Parse the nagios configuration
 objectcache_f = open(objectcache, 'r').readlines()
@@ -67,6 +75,8 @@ for line in objectcache_f:
                 currentsection = {'type': 'hostgroup'}
             elif keyword[1] == 'service':
                 currentsection = {'type': 'service'}
+            elif keyword[1] == 'servicegroup':
+                currentsection = {'type': 'servicegroup'}
             elif keyword[1] == 'timeperiod':
                 currentsection = {'type': 'timeperiod'}
             else:
@@ -86,6 +96,8 @@ for line in objectcache_f:
             hostgroups[currentsection['hostgroup_name']] = currentsection
         elif currentsection['type'] == 'service':
             services[currentsection['service_description']] = currentsection
+        elif currentsection['type'] == 'servicegroup':
+            servicegroups[currentsection['servicegroup_name']] = currentsection
         elif currentsection['type'] == 'timeperiod':
             timeperiods[currentsection['timeperiod_name']] = currentsection
     else:
@@ -163,6 +175,15 @@ if grouporder == []:
         if group[:6] != 'check_':
 		grouporder.append(group)
     grouporder.sort()
+# Massage the servicegroups into a sane format
+for servicegroup in servicegroups:
+    hosts = servicegroups[servicegroup]['members'][::2]
+    services = servicegroups[servicegroup]['members'][1::2]
+    servicegroups[servicegroup]['members'] = {}
+    for host, service in zip(hosts, services):
+        if host not in servicegroups[servicegroup]['members']:
+            servicegroups[servicegroup]['members'][host] = []
+        servicegroups[servicegroup]['members'][host].append(service)
 
 
 # Useful functions
@@ -282,5 +303,21 @@ if __name__ == '__main__':
     #for group in grouporder:
     #    print group
     #print hostgroups.keys()
-    print inGroup('web1.sv2', 'critical')
-    #print programstatus
+    #print inGroup('web1.sv2', 'critical')
+    #foo = programstatus.keys()
+    #foo.sort()
+    #for key in foo:
+    #    print key+'='+programstatus[key]
+    #print contacts['zwhite']['alias']
+    #print commands
+    #print contacts['zwhite']
+    #print contactgroups
+    #print hosts
+    #print hostgroups
+    #print hoststatus
+    #print services
+    #print servicegroups['notify_sms']
+    for host in servicegroups['notify_sms']['members']:
+        print host
+    #print timeperiods
+    #print sms

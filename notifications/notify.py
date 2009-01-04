@@ -6,7 +6,31 @@ if __file__[0] == '/':
     sys.path.append(os.path.join(os.path.dirname(__file__) + '/..'))
 else:
     sys.path.append(os.path.join(os.getcwd() + '/..'))
-import nagios
+import clickatel, nagios
+
+options = open('/tmp/notify_opts.txt', 'w')
+for arg in sys.argv:
+    options.write("'%s' " % arg)
+options.write('\n')
+options.close()
+
+# Helpful functions
+def nagiosCmd(cmd):
+    cmdline = nagios.commands[cmd]['command_line']
+    email =  nagios.contacts[vars['notify']]['email']
+    cmdline = re.sub('\$CONTACTEMAIL\$', email, cmdline)
+    cmdline = re.sub('\$HOSTALIAS\$', vars['host'], cmdline)
+    cmdline = re.sub('\$HOSTNAME\$', vars['host'], cmdline)
+    cmdline = re.sub('\$HOSTSTATE\$', vars['state'], cmdline)
+    cmdline = re.sub('\$HOSTADDRESS\$', vars['address'], cmdline)
+    cmdline = re.sub('\$HOSTOUTPUT\$', vars['serviceoutput'], cmdline)
+    cmdline = re.sub('\$LONGDATETIME\$', vars['datetime'], cmdline)
+    cmdline = re.sub('\$NOTIFICATIONTYPE\$', vars['type'], cmdline)
+    cmdline = re.sub('\$SERVICEDESC\$', vars['service'], cmdline)
+    cmdline = re.sub('\$SERVICEOUTPUT\$', vars['serviceoutput'], cmdline)
+    cmdline = re.sub('\$SERVICESTATE\$', vars['state'], cmdline)
+    os.system(cmdline)
+
 
 # Parse our commandline
 options = ''
@@ -20,30 +44,40 @@ for arg in args:
     if arg[1] != '':
         vars[arg[0][2:]] = arg[1]
 
+# Determine whether or not we should send an SMS
+sendSMS = False
+if 'notify_sms' in nagios.servicegroups:
+    members = nagios.servicegroups['notify_sms']['members']
+    if vars['host'] in members:
+        if 'service' in vars:
+            if vars['service'] in members[vars['host']]:
+                sendSMS = True
+        else:
+            sendSMS = True
+
+# Format the output
 if 'service' in vars:
-    vars['serviceoutput'] = nagios.pluginOutput(vars['service'], vars['serviceoutput'], '\\n')
+    vars['serviceoutput'] = nagios.pluginOutput(vars['service'], 
+                                                vars['serviceoutput'], '\\n')
+
+# Check to see if we treat this as a normal service notification or a comment.
 if 'comment' not in vars:
-    # For now, just call the same command nagios would in this situation
+    # Call the same command nagios would in this situation
     if 'service' in vars:
-        cmd = nagios.commands['notify-by-email']['command_line']
+        if sendSMS:
+            cmds = ['notify-by-email', 'notify-by-sms']
+        else:
+            cmds = ['notify-by-email']
     else:
-        cmd = nagios.commands['host-notify-by-email']['command_line']
-    cmd = re.sub('\$CONTACTEMAIL\$', vars['notify'], cmd)
-    cmd = re.sub('\$HOSTALIAS\$', vars['host'], cmd)
-    cmd = re.sub('\$HOSTNAME\$', vars['host'], cmd)
-    cmd = re.sub('\$HOSTSTATE\$', vars['state'], cmd)
-    cmd = re.sub('\$HOSTADDRESS\$', vars['address'], cmd)
-    cmd = re.sub('\$HOSTOUTPUT\$', vars['serviceoutput'], cmd)
-    cmd = re.sub('\$LONGDATETIME\$', vars['datetime'], cmd)
-    cmd = re.sub('\$NOTIFICATIONTYPE\$', vars['type'], cmd)
-    cmd = re.sub('\$SERVICEDESC\$', vars['service'], cmd)
-    cmd = re.sub('\$SERVICEOUTPUT\$', vars['serviceoutput'], cmd)
-    cmd = re.sub('\$SERVICESTATE\$', vars['state'], cmd)
-    os.system(cmd)
+        if sendSMS:
+            cmds = ['host-notify-by-email', 'host-notify-by-sms']
+        else:
+            cmds = ['host-notify-by-email']
+    for cmd in cmds:
+        nagiosCmd(cmd)
 else:
     # Send an email with a comment about the service
-    msg = ['***** Nagios *****']
-    msg.append('')
+    msg = []
     msg.append('Time: ' + vars['datetime'])
     msg.append('Host: ' + vars['host'])
     msg.append('Address: ' + vars['address'])
@@ -59,7 +93,14 @@ else:
     msg = safestr.sub("\\'", msg)
     host = safestr.sub("\\'", vars['host'])
     author = safestr.sub("\\'", vars['author'])
-    notify = safestr.sub("\\'", vars['notify'])
+    email =  nagios.contacts[vars['notify']]['email']
     cmd = """echo -e '%s' | mail -s 'Comment about %s from %s' '%s'""" % \
-      (msg, host, author, notify)
+      (msg, host, author, email)
     os.system(cmd)
+
+    if sendSMS:
+        pager = nagios.contacts[vars['notify']]['pager']
+        sms = clickatel.clickatel(nagios.sms['api_id'], nagios.sms['username'],
+                                  nagios.sms['password'], pager)
+        msg='MSG from %s about %s: %s' % (vars['author'],vars['host'],vars['comment'])
+        sms.sendMsg(msg)
