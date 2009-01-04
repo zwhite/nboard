@@ -5,6 +5,7 @@
 import ConfigParser, os, sys, time
 
 # Set some variables
+version = '0.6'
 if __file__[0] == '/':
     basedir = os.path.dirname(__file__)
 else:
