@@ -2,10 +2,7 @@
 
 # Wrapper script for sending notifications
 import getopt, os, re, sys
-if __file__[0] == '/':
-    sys.path.append(os.path.join(os.path.dirname(__file__) + '/..'))
-else:
-    sys.path.append(os.path.join(os.getcwd() + '/..'))
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)) + '/..'
 import clickatel, nagios
 
 options = open('/tmp/notify_opts.txt', 'w')

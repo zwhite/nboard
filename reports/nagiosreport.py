@@ -2,10 +2,7 @@
 """Generate a daily email telling us what we need to know about nagios."""
 
 import os, sys, time
-if __file__[0] == '/':
-    sys.path.append(os.path.join(os.path.dirname(__file__) + '/..'))
-else:
-    sys.path.append(os.path.join(os.getcwd() + '/..'))
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)) + '/..'))
 import nagios
 
 # Make sure that checks are happening actively.
