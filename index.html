@@ -4,43 +4,50 @@
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
  <title>nboard &mdash; The Network Dashboard</title>
+ <link rel="shortcut icon" href="favicon.ico" />
  <style type="text/css">
-  body { margin-top: 1.0em; background-color: #b6d1b0; font-family: "helvetica"; color: #000000; }
+  body { margin-top: 1.0em; background-color: #BDD8E9; font-family: "helvetica"; color: #000000; }
   #container { margin: 0 auto; width: 700px; }
-  h1 { font-size: 3.8em; color: #492e4f; margin-bottom: 3px; }
+  h1 { font-size: 3.8em; color: #000000; margin-bottom: 3px; }
   h1 .small { font-size: 0.4em; }
   h1 a { text-decoration: none }
-  h2 { font-size: 1.5em; color: #492e4f; }
-  h3 { text-align: center; color: #492e4f; }
-  a { color: #492e4f; }
+  h2 { font-size: 1.5em; color: #000000; }
+  h3 { text-align: center; color: #000000; }
+  a { color: #000000; }
   .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-  .download { float: right; }
   pre { background: #000; color: #fff; padding: 15px;}
   hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
   .footer { text-align:center; padding-top:30px; font-style: italic; }
+  .menu { font-size: 0.6em; text-align: center }
  </style>
 </head>
 <body>
  <div id="container">
 
-  <div class="download">
-   <a href="http://github.com/zwhite/nboard/zipball/master">
-    <img border="0" width="90" src="http://github.com/images/modules/download/zip.png" />
+  <h1>
+   <a href="http://github.com/zwhite/nboard">
+    <img src="nboard_57.png" /> nboard - 
+    <span class="small">The Network Dashboard</span>
    </a>
-   <a href="http://github.com/zwhite/nboard/tarball/master">
-    <img border="0" width="90" src="http://github.com/images/modules/download/tar.png" />
-   </a>
+  </h1>
+
+  <div class="menu">
+   <p>
+    [<a href="#Introduction">Introduction</a>]
+    [<a href="#Documentation">Documentation</a>]
+    [<a href="#Dependencies">Dependencies</a>]
+    [<a href="#Authors">Authors</a>]
+    [<a href="#Download">Download</a>]
+    [<a href="http://github.com/zwhite/nboard">Project Page</a>]
+    [<a href="http://github.com/zwhite/nboard/wikis">Wiki</a>]
+   </p>
   </div>
-      
-  <h1><a href="http://github.com/zwhite/nboard">nboard</a> <span class="small">by <a href="http://github.com/zwhite">zwhite</a></small></h1>
-  <div class="description">The Network Dashboard</div>
 
   <p>
    This project aims to provide a high-level overview of your network, with the
    capability to drill-down to find problems or indicate that a problem has been
    reviewed and is being worked on.
   </p>
-
   <p>
    It builds upon Nagios, eluna, rrdtool and other tools that are a standard
    part of nearly every unix sysadmin's toolkit. It doesn't attempt to collect
@@ -48,27 +55,64 @@
    other means.
   </p>
 
-  <h2>Documentation</h2>
+  <p>
+   A <a target="_blank" href="http://darkstar.frop.org/nboard/">demo site</a> 
+   is available to give you an idea of the available functionality.
+  </p>
+
+  <h2 id="Introduction">Introduction</h2>
+  <p>
+   The beautiful thing about Nagios is that it is adaptable to a lot of 
+   situations. This adaptability comes at a price, however, as organizations 
+   often have little or no idea how to actually use nagios, and many admins 
+   have conflicting ideas about how to work with nagios. Do you acknowledge 
+   alerts or just silence them for that service? How do I figure out what's 
+   actually going on? What are comments good for anyway?
+  </p>
+  <p>
+   To solve these perceived problems we wrote our own interface. We feel this 
+   interface gives us a better view over our network and allows us to actually 
+   work with nagios, not simply use it for notification purposes.
+  </p>
+
+  <h2 id="Documentation">Documentation</h2>
   <p>
    The documentation can be found in the 
    <a href="http://github.com/zwhite/nboard/wikis">wiki</a>.
   </p>
 
-  <h2>Dependencies</h2>
-  <p>python, cgi webserver</p>
+  <h2 id="Dependencies">Dependencies</h2>
+  <ul>
+   <li>python</li>
+   <li>cgi capable webserver</li>
+  </ul>
 
-  <h2>Authors</h2>
-  <p>Zach (zach@box.net)</p>
+  <h2 id="Authors">Authors</h2>
+  <p>Zach White (zach@box.net)</p>
 
-  <h2>Download</h2>
+  <h2 id="Download">Download</h2>
+  <h4>Stable Release</h4>
+
+  <p>The latest stable release is 0.6:</p>
+
+  <ul>
+   <li><a href="nboard-0.6.tar.gz">nboard-0.6.tar.gz</a></li>
+  </ul>
+
+  <h4>Development</h4>
+
   <p>
-   You can download this project in either
-   <a href="http://github.com/zwhite/nboard/zipball/master">zip</a> or
-   <a href="http://github.com/zwhite/nboard/tarball/master">tar</a> formats.
+   The latest and greatest (probably buggy) code can be found in multiple
+   formats:
   </p>
 
-  <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-   by running:
+  <ul>
+   <li><a href="http://github.com/zwhite/nboard/tarball/master">tar</a></li>
+   <li><a href="http://github.com/zwhite/nboard/zipball/master">zip</a></li>
+  </ul>
+
+  <p>
+   You can also clone the project with <a href="http://git-scm.com">Git</a>:
    <pre>$ git clone git://github.com/zwhite/nboard</pre>
   </p>
       
