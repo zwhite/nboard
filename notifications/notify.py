@@ -5,11 +5,15 @@ import getopt, os, re, sys
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__))+'/..'))
 import clickatel, nagios
 
-options = open('/tmp/notify_opts.txt', 'w')
-for arg in sys.argv:
-    options.write("'%s' " % arg)
-options.write('\n')
-options.close()
+# Attempt to log our options for debugging purposes.
+try:
+    options = open('/tmp/notify_opts.txt', 'w')
+    for arg in sys.argv:
+        options.write("'%s' " % arg)
+    options.write('\n')
+    options.close()
+except IOError:
+    pass
 
 # Helpful functions
 def nagiosCmd(cmd):
@@ -35,7 +39,8 @@ def nagiosCmd(cmd):
 options = ''
 long_options = [
 	'type=', 'host=', 'service=', 'state=', 'address=', 'serviceoutput=',
-	'datetime=', 'notify=', 'comment=', 'author='
+	'datetime=', 'notify=', 'comment=', 'author=', 'lasthoststate=',
+	'lastservicestate='
 ]
 args, leftover = getopt.getopt(sys.argv[1:], options, long_options)
 vars = {}
@@ -46,13 +51,15 @@ for arg in args:
 # Determine whether or not we should send an SMS
 sendSMS = False
 if 'notify_sms' in nagios.servicegroups:
-    members = nagios.servicegroups['notify_sms']['members']
-    if vars['host'] in members:
-        if 'service' in vars:
-            if vars['service'] in members[vars['host']]:
+    if vars['state'] in ['DOWN', 'UP', 'CRITICAL', 'OK']:
+        members = nagios.servicegroups['notify_sms']['members']
+        if vars['host'] in members:
+            if 'service' in vars:
+                if 'CRITICAL' in [vars['lastservicestate'], vars['state']]:
+                    if vars['service'] in members[vars['host']]:
+                        sendSMS = True
+            else:
                 sendSMS = True
-        else:
-            sendSMS = True
 
 # Format the output
 if 'service' in vars:
