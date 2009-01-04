@@ -29,3 +29,10 @@ hostGraphBaseUrl: http://%s.example.com/rrd/%s/%s.rrd
 [icons]
 web: images/website.png
 critical: images/nboard_24.png
+
+# If you wish to send SMS messages using clickatel modify this section.
+# See <http://github.com/zwhite/nboard/wikis/notifications> for more info.
+[clickatell_sms]
+user: clickatel_username
+password: clickatel_password
+api_id: 1111111
