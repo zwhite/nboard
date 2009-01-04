@@ -70,6 +70,18 @@ unless you log in using an account that matches a contact. (Similar to the
 official nagios interface.)
 
 
+Configuration
+-------------
+
+Configuration is handled in the conf/ directory. If you are not using 
+display_rrd.cgi you will only need to change config.ini.
+
+Copy config.ini.sample to config.ini. See the nboard wiki for more information
+on what configuration options do.
+
+Wiki: <http://github.com/zwhite/nboard/wikis>
+
+
 Reports
 -------
 
@@ -82,3 +94,32 @@ basis. Something similar to the following should work:
 
 	30 7 * * * /path/to/reports/nagiosreport.py \
 	           | mail -s 'Daily Status Report' ops@example.net
+
+Notification
+------------
+
+For sending messages to work from within nboard you will have to install
+a couple custom notification commands. These commands can be found below. Be
+sure that you modify the path to the command.
+
+You should change all existing notify-by-email instances in your nagios config 
+to nboard-notify-service, and all existing host-notify-by-email instances
+to nboard-notify-host. The notify.py script will call the notify-by-email and
+host-notify-by-email to send out notifications, so any customisations you
+have made should be honored.
+
+For more information on notifications, including enabling SMS delivery of
+certain notifications, see the Notifications page on the nboard wiki:
+
+	<http://github.com/zwhite/nboard/wikis/notifications>
+
+Configuration to include:
+	define command {
+		command_name nboard-notify-host
+		command_line /path/to/nboard/notifications/notify.py --type="$NOTIFICATIONTYPE$" --host="$HOSTNAME$" --state="$HOSTSTATE$" --address="$HOSTADDRESS$" --serviceoutput="$SERVICEOUTPUT$" --datetime="$LONGDATETIME$" --notify="$CONTACTNAME$" --comment="$NOTIFICATIONCOMMENT$" --author="$NOTIFICATIONAUTHOR$"
+	}
+	define command {
+		command_name nboard-notify-service
+		command_line /path/to/nboard/notifications/notify.py --type="$NOTIFICATIONTYPE$" --host="$HOSTNAME$" --service="$SERVICEDESC$" --state="$SERVICESTATE$" --address="$HOSTADDRESS$" --serviceoutput="$SERVICEOUTPUT$" --datetime="$LONGDATETIME$" --notify="$CONTACTNAME$" --comment="$NOTIFICATIONCOMMENT$" --author="$NOTIFICATIONAUTHOR$"
+	}
+

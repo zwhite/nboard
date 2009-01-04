@@ -1,2 +1,16 @@
+2009 Jan  4 08:04:54 -0000 Zach White <zach@box.net> 0.6
+* Add support for sending SMS messages via clickatel
+* Various cleanups and readability tweaks
+* Update nagiosreport.py to reflect the nagios.py changes. Report on which
+  services have notifications disabled.
+* Implement enabling and disabling alerts from within nboard.
+* Implementing sending messages.
+* New notification script which handles comments.
+* Display relative times instead of absolute times.
+* Properly display host and group statuses.
+* Pull as much configuration information as possible from nagios.
+* Fix graph display.
+* Add missing iui documentation files.
+
 2008 Dec 23 17:27:00 -0000 Zach White <zach@box.net> 0.5b1
 * Initial Release

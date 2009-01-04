@@ -12,10 +12,6 @@ iphone.cgi:
 	output, especially over EDGE. Should only return the overview pages 
 	maybe the groups, and fetch the rest on demand.
 
-reports/nagiosreport.py:
-	This should check some more things. Which hosts have notifications
-	disabled. Has anything gone unacknowledged for more than N hours.
-
 main.js:
 	Write function to handle enabling and disabling notifications for
 	contacts, as used by contacts.py.
