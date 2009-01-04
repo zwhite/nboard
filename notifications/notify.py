@@ -15,7 +15,9 @@ options.close()
 def nagiosCmd(cmd):
     cmdline = nagios.commands[cmd]['command_line']
     email =  nagios.contacts[vars['notify']]['email']
+    pager = nagios.contacts[vars['notify']]['pager']
     cmdline = re.sub('\$CONTACTEMAIL\$', email, cmdline)
+    cmdline = re.sub('\$CONTACTPAGER\$', pager, cmdline)
     cmdline = re.sub('\$HOSTALIAS\$', vars['host'], cmdline)
     cmdline = re.sub('\$HOSTNAME\$', vars['host'], cmdline)
     cmdline = re.sub('\$HOSTSTATE\$', vars['state'], cmdline)
