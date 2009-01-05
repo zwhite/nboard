@@ -104,7 +104,7 @@ else:
       (msg, host, author, email)
     os.system(cmd)
 
-    if sendSMS:
+    if sendSMS and vars['comment'].find('sms') > -1:
         pager = nagios.contacts[vars['notify']]['pager']
         sms = clickatel.clickatel(nagios.sms['api_id'], nagios.sms['username'],
                                   nagios.sms['password'], pager)

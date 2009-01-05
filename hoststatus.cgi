@@ -33,6 +33,7 @@ if nagios.permUserWrite():
     bodytext.append('    <input type="hidden" name="commentEntryHost" id="commentEntryHost" value="%s" />')
     bodytext.append('    <input type="hidden" name="commentEntryService" id="commentEntryService" value="%s" />')
     bodytext.append('    <h5 id="commentEntryReason">Reason for silencing </h5>')
+    bodytext.append('    <p>(Include "sms" in your comment if you want SMS notification.)</p>')
     bodytext.append('    <input type="text" name="commentEntryText" id="commentEntryText" />')
     bodytext.append('    <input type="submit" />')
     bodytext.append('   </form>')
