@@ -63,6 +63,6 @@ for host in hostlist:
 	    if service_status > 2: service_status=2
             if service_status > current_status:
                 current_status = service_status
-        bodytext.append('  <a class="%s list" target="main_f" href="hoststatus.cgi?host=%s"><img src="%s" /> %s</a>' % (nagios.statuses[current_status], host, nagios.getGroupIcon(group), host))
+        bodytext.append('  <a class="%s list" target="main_f" href="hoststatus.cgi?host=%s"><img src="%s" /> %s</a>' % (nagios.statuses[current_status], host, nagios.getHostIcon(host), host))
 
 print HTML % {'refresh': 60, 'body': '\n'.join(bodytext)}

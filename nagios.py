@@ -92,6 +92,7 @@ for line in objectcache_f:
         elif currentsection['type'] == 'contactgroup':
             contactgroups[currentsection['contactgroup_name']] = currentsection
         elif currentsection['type'] == 'host':
+            # hrm, hosts here!
             hosts[currentsection['host_name']] = currentsection
         elif currentsection['type'] == 'hostgroup':
             hostgroups[currentsection['hostgroup_name']] = currentsection
@@ -178,10 +179,10 @@ if grouporder == []:
     grouporder.sort()
 # Massage the servicegroups into a sane format
 for servicegroup in servicegroups:
-    hosts = servicegroups[servicegroup]['members'][::2]
+    hostlist = servicegroups[servicegroup]['members'][::2]
     services = servicegroups[servicegroup]['members'][1::2]
     servicegroups[servicegroup]['members'] = {}
-    for host, service in zip(hosts, services):
+    for host, service in zip(hostlist, services):
         if host not in servicegroups[servicegroup]['members']:
             servicegroups[servicegroup]['members'][host] = []
         servicegroups[servicegroup]['members'][host].append(service)
@@ -199,6 +200,13 @@ def getGroupIcon(group):
     """Returns the icon URI for a group."""
     if group in icons:
         return icons[group]
+    return 'images/nboard_24.png'
+
+
+def getHostIcon(host):
+    """Returns the icon URI for a host."""
+    if 'icon_image' in hosts[host] and hosts[host]['icon_image'] != '':
+        return 'images/%s' % hosts[host]['icon_image']
     return 'images/nboard_24.png'
 
 
@@ -224,16 +232,16 @@ def groupStatus(group):
     return (status, notifications)
 
 
-def hostStatus(host, notifications=False):
+def hostStatus(host, criticalGroup=False):
     """Returns a tuple containing the aggregated status of the host and whether
     notifications are enabled.
 
-    If notifications is True it will only return critical for services with
-    notifications enabled.
+    If criticalGroup is True it will only return warning or critical for 
+    services with notifications enabled.
     """
     if hoststatus[host]['current_state'] == "1":
         # No need to check the services, host is down
-        if notifications and hoststatus[host]['notifications_enabled'] == "0":
+        if criticalGroup and hoststatus[host]['notifications_enabled'] == "0":
             return (2, False)
         else:
             return (2, True)
@@ -248,6 +256,8 @@ def hostStatus(host, notifications=False):
         elif service['current_state'] == "1":
             if status < 1: status = 1
     if status > 1 and notifications:
+        if criticalGroup:
+            return (0, True)
         return (status, True)
     else:
         return (status, False)
@@ -258,6 +268,7 @@ def inGroup(host, hostgroup):
     if host in hostgroups[hostgroup]['members']:
         return True
     return False
+
 
 def permUserWrite(user=user):
     "Returns true if the supplied user is allowed to perform write operations."
@@ -313,12 +324,14 @@ if __name__ == '__main__':
     #print commands
     #print contacts['zwhite']
     #print contactgroups
-    #print hosts
+    #print hosts['core1.sv2']['icon_image']
     #print hostgroups
     #print hoststatus
     #print services
     #print servicegroups['notify_sms']
-    for host in servicegroups['notify_sms']['members']:
-        print host
+    #for host in servicegroups['notify_sms']['members']:
+    #    print host
     #print timeperiods
     #print sms
+    for host in hosts:
+        print hosts[host]['icon_image']
