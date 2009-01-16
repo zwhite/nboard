@@ -108,6 +108,10 @@ th {
 	text-align: left;
 }
 
+.nowrap {
+	white-space: nowrap;
+}
+
 /* Classes for styling statuses */
 .statusGood {
 	background-color: green;
