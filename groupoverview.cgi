@@ -36,8 +36,7 @@ for host in hostlist:
     elif hoststatus['current_state'] == '1':
         currentState = ('statusCrit', 'CRITICAL')
     bodytext.append('   <tr>')
-    bodytext.append('    <td><a href="hoststatus.cgi?host=%s">%s</a></td>' \
-     % (host, hosttext))
+    bodytext.append('    <td class="nowrap"><a href="hoststatus.cgi?host=%s"><img src="%s" />%s</a></td>' % (host, nagios.getHostIcon(host), hosttext))
     bodytext.append('    <td class="%s narrow">%s</td>' % currentState)
     for service in hoststatus['services']:
         service = hoststatus['services'][service]
