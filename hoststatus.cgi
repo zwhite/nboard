@@ -47,9 +47,9 @@ bodytext.append('    <th>Status</th>')
 bodytext.append('    <th>Last OK</th>')
 bodytext.append('    <th>Status Information</th>')
 if hoststatus['notifications_enabled'] == '0':
-    bodytext.append('     <th>%s</th>' % html.iconNotify('service', host, 'all services', False))
+    bodytext.append('     <th class="nowrap">%s</th>' % html.iconNotify('service', host, 'all services', False))
 else:
-    bodytext.append('     <th>%s</th>' % html.iconNotify('service', host, 'all services', True))
+    bodytext.append('     <th class="nowrap">%s</th>' % html.iconNotify('service', host, 'all services', True))
 bodytext.append('   </tr>')
 for service in hoststatus['services']:
     service = hoststatus['services'][service]
@@ -78,7 +78,7 @@ for service in hoststatus['services']:
     bodytext.append('    <td class="%s narrow">%s</td>' % currentState)
     bodytext.append('    <td class="timestamp"><p>%s</p></td>' % lastTimeOK)
     bodytext.append('    <td><p>%s</p></td>' % pluginOutput)
-    bodytext.append('    <td>')
+    bodytext.append('    <td class="nowrap">')
     if nagios.permUserWrite():
         bodytext.append('     ' + sendMessage)
     bodytext.append('     ' + notifications)
