@@ -2,7 +2,7 @@
 """Performs certain actions on behalf of the user, most of them relating to
 sending commands to nagios."""
 
-import cgi, cgitb, time
+import cgi, cgitb, time, sys
 import nagios
 cgitb.enable(logdir="/tmp")
 
@@ -62,6 +62,7 @@ else:
     sys.exit()
 
 print 'Content-Type: text/html\n'
-print HTML % {'refresh': 3000, 'body': '<p>Command submitted. It may take a moment to show up.</p>'}
-#time.sleep(2) # Give nagios a chance to perform the command
-#print 'Location: hoststatus.cgi?host=%s&service=%s\n' % (host, service)
+returnPage=['<h2>Command submitted. It may take a moment to be reflected.</h2>']
+returnPage.append('<h4>Return to')
+returnPage.append('<a href="hoststatus.cgi?host=%s">%s</a>.</h4>' % (host, host))
+print HTML % {'refresh': 3000, 'body': '\n'.join(returnPage)}
