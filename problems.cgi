@@ -29,7 +29,11 @@ for host in hostlist:
     hostproblem=[]
     if nagios.hoststatus[host]['current_state'] == "1":
         # Host is Down
-        hostproblem.append('<td class="statusCrit">HOST DOWN!</td>')
+        if nagios.hoststatus[host]['notifications_enabled'] == '0':
+            notify = ''
+        else:
+            notify = '<img src="images/notify.gif" />'
+        hostproblem.append('<td class="statusCrit">HOST DOWN! %s</td>' % notify)
     else:
         for service in nagios.hoststatus[host]['services']:
             service = nagios.hoststatus[host]['services'][service]
@@ -40,7 +44,11 @@ for host in hostlist:
             else:
                 currentState = 'statusCrit'
             if service['current_state'] in ('1', '2', '3'):
-                hostproblem.append('<td class="%s"><a href="hoststatus.cgi?host=%s&service=%s">%s</a></td>' % (currentState, host, urllib.quote(service['service_description']), service['service_description']))
+                if service['notifications_enabled'] == '0':
+                    notify = ''
+                else:
+                    notify = '<img src="images/notify.gif" />'
+                hostproblem.append('<td class="%s"><a href="hoststatus.cgi?host=%s&service=%s">%s%s</a></td>' % (currentState, host, urllib.quote(service['service_description']), service['service_description'], notify))
     if hostproblem != []:
         hostproblems.append('<tr><td><a href="hoststatus.cgi?host=%s">%s</a></td>%s</tr>' % (host, host, ''.join(hostproblem)))
 bodytext.append('\n'.join(hostproblems))
