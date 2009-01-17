@@ -311,7 +311,7 @@ if __name__ == '__main__':
     #print allGroupStatus()
     #print groupStatus('database')
     #print 'database:', groupStatus('database')
-    #print 'apollo.ve:', hostStatus('apollo.ve')
+    print 'publish.dev:', hostStatus('publish.dev')
     #for group in grouporder:
     #    print group
     #print hostgroups.keys()
@@ -333,5 +333,5 @@ if __name__ == '__main__':
     #    print host
     #print timeperiods
     #print sms
-    for host in hosts:
-        print hosts[host]['icon_image']
+    #for host in hosts:
+    #    print hosts[host]['icon_image']
