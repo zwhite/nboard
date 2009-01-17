@@ -48,7 +48,7 @@ for host in hostlist:
                     notify = ''
                 else:
                     notify = '<img src="images/notify.gif" />'
-                hostproblem.append('<td class="%s"><a href="hoststatus.cgi?host=%s&service=%s">%s%s</a></td>' % (currentState, host, urllib.quote(service['service_description']), service['service_description'], notify))
+                hostproblem.append('<td class="%s"><a href="hoststatus.cgi?host=%s&service=%s">%s%s</a><hr />%s</td>' % (currentState, host, urllib.quote(service['service_description']), service['service_description'], notify, nagios.pluginOutput(service['service_description'], service['plugin_output'])))
     if hostproblem != []:
         hostproblems.append('<tr><td><a href="hoststatus.cgi?host=%s">%s</a></td>%s</tr>' % (host, host, ''.join(hostproblem)))
 bodytext.append('\n'.join(hostproblems))
