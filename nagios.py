@@ -11,7 +11,7 @@ if __file__[0] == '/':
 else:
     basedir = os.getcwd()
 configfile = os.path.join(basedir + '/conf/config.ini')
-statuses = ['statusGood', 'statusWarn', 'statusCrit']
+statuses = ['statusGood', 'statusWarn', 'statusCrit', 'statusUnknown']
 if 'REMOTE_USER' in os.environ:
     user = os.environ['REMOTE_USER']
 else:
