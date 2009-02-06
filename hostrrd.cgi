@@ -95,7 +95,7 @@ if graph == 'load':
         graphcmd.append('GPRINT:load_15mn:AVERAGE:"Average\\: %5.2lf "')
         graphcmd.append('GPRINT:load_15mn:MAX:"Max\\: %5.2lf\\n"')
     graphcmd.append('LINE1:mysum#000000')
-if graph == 'cpu':
+elif graph == 'cpu':
     graphcmd.append('--title "%s CPU Usage"' % host.title())
     graphcmd.append('--vertical-label="Percent"')
     graphcmd.append('--lower-limit=0')
@@ -125,7 +125,7 @@ if graph == 'cpu':
         graphcmd.append('GPRINT:p_nice:AVERAGE:"Average\\: %5.2lf%% "')
         graphcmd.append('GPRINT:p_nice:MAX:"Max\\: %5.2lf%%\\n"')
     graphcmd.append('LINE1:mysum#000000')
-if graph == 'mem':
+elif graph == 'mem':
     graphcmd.append('--title "%s Memory"' % host.title())
     graphcmd.append('--vertical-label="Percent"')
     graphcmd.append('--lower-limit 0')
@@ -142,7 +142,7 @@ if graph == 'mem':
         graphcmd.append('GPRINT:swap:LAST:"Current\\: %3.0lf%% "')
         graphcmd.append('GPRINT:swap:AVERAGE:"Average\\: %3.0lf%% "')
         graphcmd.append('GPRINT:swap:MAX:"Maximum\\: %3.0lf%%"')
-if graph == 'process':
+elif graph == 'process':
     graphcmd.append('--title "%s Processes"' % host.title())
     graphcmd.append('--vertical-label="Processes"')
     graphcmd.append('--units-exponent 0')
@@ -159,7 +159,7 @@ if graph == 'process':
         graphcmd.append('GPRINT:running:LAST:"Current\\: %5.0lf "')
         graphcmd.append('GPRINT:running:AVERAGE:"Average\\: %5.0lf "')
         graphcmd.append('GPRINT:running:MAX:"Maximum\\: %5.0lf"')
-if graph == 'space':
+elif graph == 'space':
     graphcmd.append('--title "%s Used Space on /"' % host.title())
     graphcmd.append('--vertical-label="Percent"')
     graphcmd.append('--lower-limit 0')
@@ -171,11 +171,46 @@ if graph == 'space':
         graphcmd.append('GPRINT:space:AVERAGE:"Average\\: %3.0lf%% "')
         graphcmd.append('GPRINT:space:MAX:"Maximum\\: %3.0lf%%\\n"')
     graphcmd.append('LINE1:space#000000')
+elif graph == 'apachestats':
+	graphcmd.append('--title "%s Apache"' % host.title())
+	graphcmd.append('--lower-limit 0')
+	graphcmd.append('DEF:reqs_per_sec=%s:reqs_per_sec:AVERAGE' % rrdfile)
+	graphcmd.append('DEF:bytes_per_sec=%s:bytes_per_sec:AVERAGE' % rrdfile)
+	graphcmd.append('DEF:bytes_per_req=%s:bytes_per_req:AVERAGE' % rrdfile)
+	graphcmd.append('DEF:busy_workers=%s:busy_workers:AVERAGE' % rrdfile)
+	graphcmd.append('DEF:idle_workers=%s:idle_workers:AVERAGE' % rrdfile)
+	if graphLegend:
+		graphcmd.append('GPRINT:bytes_per_sec:LAST:"Bytes/Sec\\t\\tCurrent\\: %lf%s\\t"')
+		graphcmd.append('GPRINT:bytes_per_sec:AVERAGE:"Average\\: %lf%s\\t"')
+		graphcmd.append('GPRINT:bytes_per_sec:MAX:"Max\\: %lf%s\\n"')
+		graphcmd.append('GPRINT:bytes_per_req:LAST:"Bytes/Req\\t\\tCurrent\\: %lf%s\\t"')
+		graphcmd.append('GPRINT:bytes_per_req:AVERAGE:"Average\\: %lf%s\\t"')
+		graphcmd.append('GPRINT:bytes_per_req:MAX:"Max\\: %lf%s\\n"')
+	graphcmd.append('AREA:busy_workers#4568E4:"Busy Workers"')
+	if graphLegend:
+		graphcmd.append('GPRINT:busy_workers:LAST:" Current\\: %0.lf\\t\\t"')
+		graphcmd.append('GPRINT:busy_workers:AVERAGE:" Average\\: %0.lf\\t\\t"')
+		graphcmd.append('GPRINT:busy_workers:MAX:" Max\\: %0.lf\\n"')
+	graphcmd.append('STACK:idle_workers#F51C2F:"Idle Workers"')
+	if graphLegend:
+		graphcmd.append('GPRINT:idle_workers:LAST:" Current\\: %0.lf\\t\\t"')
+		graphcmd.append('GPRINT:idle_workers:AVERAGE:" Average\\: %0.lf\\t\\t"')
+		graphcmd.append('GPRINT:idle_workers:MAX:" Max\\: %0.lf\\n"')
+	graphcmd.append('LINE:reqs_per_sec#000000:"Req/sec      "')
+	if graphLegend:
+		graphcmd.append('GPRINT:reqs_per_sec:LAST:"Current\\: %lf\\t"')
+		graphcmd.append('GPRINT:reqs_per_sec:AVERAGE:"Average\\: %lf\\t"')
+		graphcmd.append('GPRINT:reqs_per_sec:MAX:"Max\\: %lf\\n"')
+else:
+    # FIXME: Some sort of error reporting here is in order.
+    pass
 graphcmds=' '.join(graphcmd)
 
 # Do something with the RRD
 fd, graphfile=tempfile.mkstemp()
-os.system('rrdtool graph %s %s > /dev/null' % (graphfile, graphcmds))
+os.system("echo 'rrdtool graph %s %s' > /tmp/rrdoutput" % (graphfile, graphcmds))
+os.system("echo 'Source: %s' >> /tmp/rrdoutput" % (url))
+os.system('rrdtool graph %s %s >> /tmp/rrdoutput' % (graphfile, graphcmds))
 
 # Send the user the generated graph
 print 'Content-Type: image/png\n'
