@@ -43,16 +43,17 @@ if rrdtype == 'host':
         if len(graphs) < index:
             break
         imguri = 'hostrrd.cgi?host=%s&graph=%s&width=600&height=200'
-        imguris.append(imguri % (host, graphs[index]))
+        imguri += '&start=%s&end=%s'
+        imguris.append(imguri % (host, graphs[index], startTime, endTime))
         pageuri = '?type=host&host=%s&graph=%s'
         pageuris.append(pageuri % (host, graphs[index]))
 elif rrdtype == 'datasource':
     datasources = form.getlist('datasource')
     for datasource in datasources:
-        imguri = 'rrdimg.cgi?width=600&height=200&datasource=%s'
-        imguris.append(imguri % datasource)
+        imguri = 'rrdimg.cgi?width=600&height=200&datasource=%s&start=%s&end=%s'
+        imguris.append(imguri % (datasource, startTime, endTime))
         pageuri = '?type=datasource&datasource=%s'
-        pageuris.append(imguri % datasource)
+        pageuris.append(pageuri % datasource)
 else:
     bodytext.append('<h1>Error: Unknown type: %s</h1>' % rrdtype)
 
@@ -83,38 +84,46 @@ thisurl = '?'+thisurl[1:]
 # Build the page
 bodytext.append('<p>[<a href="%s">link to this page</a>]</p>' % thisurl)
 bodytext.append('<table id="graphTable">')
-bodytext.append(' <tr>')
-bodytext.append('  <th>')
-bodytext.append('   <h5>')
-bodytext.append('    <a href="%s">[&lt;&lt;]</a>' % backurl)
-bodytext.append('    <a href="%s">[&lt;]</a>' % smbackurl)
-bodytext.append('   </h5>')
-bodytext.append('  </th>')
-bodytext.append('  <th>')
-bodytext.append('   Displaying from %s to %s' % (startTime_s, endTime_s))
-bodytext.append('  </th>')
-bodytext.append('  <th>')
-bodytext.append('   <h5>')
-bodytext.append('    <a href="%s">[&gt;]</a>' % smfwdurl)
-bodytext.append('    <a href="%s">[&gt;&gt;]</a>' % fwdurl)
-bodytext.append('   </h5>')
-bodytext.append(' </tr>')
 for (index, uri) in enumerate(imguris):
     bodytext.append(' <tr>')
+    bodytext.append('  <th>')
+    bodytext.append('   <h5>')
+    bodytext.append('    <a href="%s">[&lt;&lt;]</a>' % backurl)
+    bodytext.append('    <a href="%s">[&lt;]</a>' % smbackurl)
+    bodytext.append('   </h5>')
+    bodytext.append('  </th>')
+    bodytext.append('  <th>')
+    bodytext.append('   %s &mdash; %s' % (startTime_s, endTime_s))
+    bodytext.append('  </th>')
+    bodytext.append('  <th>')
+    bodytext.append('   <h5>')
+    bodytext.append('    <a href="%s">[&gt;]</a>' % smfwdurl)
+    bodytext.append('    <a href="%s">[&gt;&gt;]</a>' % fwdurl)
+    bodytext.append('   </h5>')
+    bodytext.append(' </tr>')
+    bodytext.append(' <tr>')
     bodytext.append('  <td>')
-    bodytext.append('   <h2>Time Period</h2>')
+    bodytext.append('   <h3>Time Period</h3>')
+    tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 31536000), thisurl)
+    bodytext.append('   <h4><a href="%s">1 year</h4>' % tmpurl)
+    tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 15768000), thisurl)
+    bodytext.append('   <h4><a href="%s">6 months</h4>' % tmpurl)
+    tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 7257600), thisurl)
+    bodytext.append('   <h4><a href="%s">12 weeks</h4>' % tmpurl)
+    tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 2419200), thisurl)
+    bodytext.append('   <h4><a href="%s">4 weeks</h4>' % tmpurl)
     tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 604800), thisurl)
-    bodytext.append('   <h3><a href="%s">1 week</h3>' % tmpurl)
+    bodytext.append('   <h4><a href="%s">1 week</h4>' % tmpurl)
     tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 432000), thisurl)
-    bodytext.append('   <h3><a href="%s">5 days</h3>' % tmpurl)
+    bodytext.append('   <h4><a href="%s">5 days</h4>' % tmpurl)
     tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 259200), thisurl)
-    bodytext.append('   <h3><a href="%s">3 days</h3>' % tmpurl)
+    bodytext.append('   <h4><a href="%s">3 days</h4>' % tmpurl)
     tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 86400), thisurl)
-    bodytext.append('   <h3><a href="%s">1 day</h3>' % tmpurl)
+    bodytext.append('   <h4><a href="%s">1 day</h4>' % tmpurl)
     tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 43200), thisurl)
-    bodytext.append('   <h3><a href="%s">12 hours</h3>' % tmpurl)
+    bodytext.append('   <h4><a href="%s">12 hours</h4>' % tmpurl)
     tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 21600), thisurl)
-    bodytext.append('   <h3><a href="%s">6 hours</h3>' % tmpurl)
+    bodytext.append('   <h4><a href="%s">6 hours</h4>' % tmpurl)
     bodytext.append('  </td>')
     bodytext.append('  <td>')
     bodytext.append('   <a href="%s">' % pageuris[index])
@@ -123,12 +132,12 @@ for (index, uri) in enumerate(imguris):
     bodytext.append('   </a>')
     bodytext.append('  </td>')
     bodytext.append('  <td>')
-    bodytext.append('   <h2>Date</h2>')
     tmpurl = re.sub(r'&end=\d*', '', thisurl)
     tmpurl = re.sub(r'&start=\d*', '', tmpurl)
     bodytext.append('   <h4><a href="%s">Now</h4>' % tmpurl)
     curtime = int(time.time())
-    for offset in [86400, 172800, 259200, 345600, 432000, 518400, 604800, 1209600, 2419200, 4838400, 7257600, 9676800]:
+    for offset in [86400, 172800, 259200, 345600, 432000, 518400, 604800,
+                   1209600, 2419200, 4838400, 7257600, 9676800]:
         thisDate = curtime - offset
         tmpurl = re.sub(r'&end=\d*', '&end=%d' % thisDate, thisurl)
         tmpurl = re.sub(r'&start=\d*', '&start=%d' % (thisDate-timePeriod), 
