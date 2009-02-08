@@ -113,8 +113,18 @@ for (index, uri) in enumerate(imguris):
     bodytext.append('  </td>')
     bodytext.append('  <td><img src="%s" style="display: block; margin: auto;" /></td>' % uri)
     bodytext.append('  <td>')
-    bodytext.append('   <h2>End Time</h2>')
-    bodytext.append('   <p>(To be Implemented)</p>')
+    bodytext.append('   <h2>Date</h2>')
+    tmpurl = re.sub(r'&end=\d*', '', thisurl)
+    tmpurl = re.sub(r'&start=\d*', '', tmpurl)
+    bodytext.append('   <h4><a href="%s">Now</h4>' % tmpurl)
+    curtime = int(time.time())
+    for offset in [86400, 172800, 259200, 345600, 432000, 518400, 604800, 1209600, 2419200, 4838400, 7257600, 9676800]:
+        thisDate = curtime - offset
+        tmpurl = re.sub(r'&end=\d*', '&end=%d' % thisDate, thisurl)
+        tmpurl = re.sub(r'&start=\d*', '&start=%d' % (thisDate-timePeriod), 
+                        tmpurl)
+        thisDateStr = time.strftime('%Y-%m-%d', time.localtime(thisDate))
+        bodytext.append('   <h5><a href="%s">%s</h5>' % (tmpurl,thisDateStr))
     bodytext.append('  </td>')
     bodytext.append(' </tr>')
 bodytext.append('</table>')
