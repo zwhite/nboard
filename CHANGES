@@ -1,3 +1,14 @@
+2009 Feb  8 11:17:48 -0000 Zach White <zach@box.net> 0.7
+* Add rrdpage.cgi for displaying one or more RRDs.
+* Add graphs.cgi for displaying datasources that are marked with display: true.
+* Handle unknown statuses.
+* Rename rrd_display.cgi to rrdimg.cgi.
+* Add problems.cgi for displaying all services with problems.
+* Improve the command success page.
+* Prevent the command icons from wrapping.
+* Pull host icon information from the nagios configuration.
+* Improve the SMS notification logic.
+
 2009 Jan  4 08:04:54 -0000 Zach White <zach@box.net> 0.6
 * Add support for sending SMS messages via clickatel
 * Various cleanups and readability tweaks
