@@ -53,7 +53,8 @@ if 'graphlegend' in form:
 
 # Fetch the remote RRD
 # FIXME: Make the URL structure more robust
-url = nagios.hostGraphBaseUrl % (host, graphs[graph], graph)
+url = nagios.hostGraphBaseUrl % (nagios.hosts[host]['address'], graphs[graph],
+                                 graph)
 fd, rrdfile=tempfile.mkstemp()
 rrdurlfd=urllib.urlopen(url)
 rrdfd = open(rrdfile, 'w')

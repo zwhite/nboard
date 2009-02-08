@@ -20,7 +20,7 @@ defaultgroup: critical
 # If you wish to display graphs, see the README.graphs file.
 graphs:	       	  false
 showHostGraphs:   false
-hostGraphBaseUrl: http://%s.example.com/rrd/%s/%s.rrd
+hostGraphBaseUrl: http://%s/rrd/%s/%s.rrd
 
 # 24x24 icons work well here. You can use larger icons by adjusting the 
 # index.html frame spacing.
