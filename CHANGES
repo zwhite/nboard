@@ -1,4 +1,5 @@
 2009 Feb  8 11:17:48 -0000 Zach White <zach@box.net> 0.7
+* Modify hoststatus.cgi to link to host graphs on rrdpage.cgi.
 * Add rrdpage.cgi for displaying one or more RRDs.
 * Add graphs.cgi for displaying datasources that are marked with display: true.
 * Handle unknown statuses.
