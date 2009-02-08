@@ -42,9 +42,9 @@ try:
     grouporder = grouporder.replace('\n', '').replace(' ', '').split(',')
 except ConfigParser.NoOptionError:
     grouporder = []
-showGraphs = config.getboolean('general', 'graphs')
 hostGraphBaseUrl = config.get('general', 'hostGraphBaseUrl', True)
 objectcache = config.get('general', 'objectcache')
+showGraphs = config.getboolean('general', 'graphs')
 showHostGraphs = config.getboolean('general', 'showHostGraphs')
 statusfile = config.get('general', 'statusfile')
 sms = None
