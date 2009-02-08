@@ -42,7 +42,7 @@ try:
     grouporder = grouporder.replace('\n', '').replace(' ', '').split(',')
 except ConfigParser.NoOptionError:
     grouporder = []
-showGraphs = config.get('general', 'graphs', True)
+showGraphs = config.getboolean('general', 'graphs')
 hostGraphBaseUrl = config.get('general', 'hostGraphBaseUrl', True)
 objectcache = config.get('general', 'objectcache')
 showHostGraphs = config.getboolean('general', 'showHostGraphs')
@@ -312,7 +312,7 @@ if __name__ == '__main__':
     #print allGroupStatus()
     #print groupStatus('database')
     #print 'database:', groupStatus('database')
-    print 'publish.dev:', hostStatus('publish.dev')
+    #print 'publish.dev:', hostStatus('publish.dev')
     #for group in grouporder:
     #    print group
     #print hostgroups.keys()
@@ -325,9 +325,9 @@ if __name__ == '__main__':
     #print commands
     #print contacts['zwhite']
     #print contactgroups
-    #print hosts['core1.sv2']['icon_image']
+    #print hosts['cronos.sv2'].keys()
     #print hostgroups
-    #print hoststatus
+    print hoststatus['cronos.sv2']['services'].keys()
     #print services
     #print servicegroups['notify_sms']
     #for host in servicegroups['notify_sms']['members']:
