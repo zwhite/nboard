@@ -6,9 +6,7 @@ import html, nagios
 cgitb.enable(logdir="/tmp")
 
 print 'Content-Type: text/html\n'
-
 HTML = open('templates/basic.html').read()
-
 form = cgi.FieldStorage()
 
 # Parse the CGI vars
@@ -55,7 +53,10 @@ for service in hoststatus['services']:
     service = hoststatus['services'][service]
     description = service['service_description']
 
-    sendMessage = '<img class="icon" onclick="sendMessage(\'%s\', \'%s\');" src="images/comment.gif" title="Send Message About %s on %s" />' % (host, description, host, description)
+    sendMessage  = '<img class="icon" onclick="sendMessage(\'%s\', \'%s\');"'
+    sendMessage += ' src="images/comment.gif"'
+    sendMessage += ' title="Send Message About %s on %s" />'
+    sendMessage = sendMessage % (host, description, host, description)
     if service['notifications_enabled'] == '0':
         notifications = html.iconNotify('service', host, description, False)
     else:
@@ -71,10 +72,14 @@ for service in hoststatus['services']:
     if 'comment' in service:
         for comment in service['comment']:
             if comment['comment_data'] != '':
-                pluginOutput = '<h4>%s: %s</h4>%s (%s, %s)' % (comment['author'].split()[0], comment['comment_data'], pluginOutput, comment['type'], comment['source'])
+                pluginOutput = '<h4>%s: %s</h4>%s (%s, %s)' % \
+                  (comment['author'].split()[0], comment['comment_data'], 
+                  pluginOutput, comment['type'], comment['source'])
 
     bodytext.append('   <tr>')
-    bodytext.append('    <td><a href="?host=%s&service=%s">%s</a></td>' % (hoststatus['host_name'], urllib.quote(service['service_description']), description))
+    tmpuri = '?host=%s&service=%s' % \
+      (hoststatus['host_name'], urllib.quote(service['service_description']))
+    bodytext.append('    <td><a href="%s">%s</a></td>' % (tmpuri, description))
     bodytext.append('    <td class="%s narrow">%s</td>' % currentState)
     bodytext.append('    <td class="timestamp"><p>%s</p></td>' % lastTimeOK)
     bodytext.append('    <td><p>%s</p></td>' % pluginOutput)
@@ -88,20 +93,37 @@ bodytext.append('  </table>')
 
 # Print the graph(s) associated with what the user clicked on
 if nagios.showHostGraphs:
+    tmpuri = ['rrdpage.cgi?type=host']
+    for graphtype in ['load', 'cpu', 'mem', 'process', 'space', 'apachestats']:
+        tmpuri.append('&host=%s&graph=%s' % (host, graphtype))
+    tmpuri = ''.join(tmpuri)
+    bodytext.append('  <h1>[<a href="%s">Show All Graphs</a>]</h1>' % tmpuri)
     printDefaultGraphs=True
     if 'service' in form:
         service=form.getfirst('service')
         if service == 'HTTP':
             printDefaultGraphs=False
-            bodytext.append('  <img src="hostrrd.cgi?host=%s&graph=apachestats&width=600&height=200" />' % (hoststatus['host_name']))
+            bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=apachestats">' % (hoststatus['host_name']))
+            bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=apachestats&width=600&height=200" />' % (hoststatus['host_name']))
+            bodytext.append('  </a>')
         elif service == 'Load' or service == 'DB Load':
             printDefaultGraphs=False
-            bodytext.append('  <img src="hostrrd.cgi?host=%s&graph=load&width=600&height=200" />' % (hoststatus['host_name']))
+            bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=load">' % (hoststatus['host_name']))
+            bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=load&width=600&height=200" />' % (hoststatus['host_name']))
+            bodytext.append('  </a>')
     if printDefaultGraphs:
-        bodytext.append('  <img src="hostrrd.cgi?host=%s&graph=load&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
-        bodytext.append('  <img src="hostrrd.cgi?host=%s&graph=cpu&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
-        bodytext.append('  <img src="hostrrd.cgi?host=%s&graph=mem&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
-        bodytext.append('  <img src="hostrrd.cgi?host=%s&graph=process&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
+        bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=load">' % (hoststatus['host_name']))
+        bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=load&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
+        bodytext.append('  </a>')
+        bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=cpu">' % (hoststatus['host_name']))
+        bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=cpu&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
+        bodytext.append('  </a>')
+        bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=mem">' % (hoststatus['host_name']))
+        bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=mem&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
+        bodytext.append('  </a>')
+        bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=process">' % (hoststatus['host_name']))
+        bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=process&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
+        bodytext.append('  </a>')
 
 # Render the page and send it to the user
 print HTML % {'refresh': 300, 'body': '\n'.join(bodytext)}
