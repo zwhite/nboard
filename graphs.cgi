@@ -21,8 +21,8 @@ for section in config.sections():
 graphs = dataSources.keys()
 graphs.sort()
 for graph in graphs:
-    #if dataSources[graph]['display'].lower() == 'false':
-    #    continue
+    if dataSources[graph]['display'].lower() == 'false':
+        continue
     graphuri = 'rrdpage.cgi?type=datasource&datasource=%s' % graph
     graphimg = 'rrdimg.cgi?width=300&height=100&datasource=%s' % graph
     bodytext.append('  <div class="graphDiv">')
