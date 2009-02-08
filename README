@@ -60,9 +60,10 @@ tree. Ensure that your web server is setup to handle .cgi files and that
 all the .cgi files are executable. (FIXME: Make this easier for inexperienced
 admins to understand)
 
-Edit the conf/config.ini and customize the settings for your need. At this
-time you have to explicitly define the machines you wish to display. In the
-future the configuration will be read to determine this information.
+Edit the conf/config.ini and customize the settings for your need. At minimum,
+you must set the objectcache, statusfile and commandfile parameters. If you
+don't have a nagios hostgroup named "critical" you need to change defaultgroup
+as well.
 
 You should enable authentication in some manner. Most sites will probably use
 .htaccess/.htpasswd. You will not be able to silence alerts or send messages
@@ -94,6 +95,7 @@ basis. Something similar to the following should work:
 
 	30 7 * * * /path/to/reports/nagiosreport.py \
 	           | mail -s 'Daily Status Report' ops@example.net
+
 
 Notification
 ------------
