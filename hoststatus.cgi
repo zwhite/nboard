@@ -95,6 +95,9 @@ bodytext.append('  </table>')
 if nagios.showHostGraphs:
     tmpuri = ['rrdpage.cgi?type=host']
     for graphtype in ['load', 'cpu', 'mem', 'process', 'space', 'apachestats']:
+        if graphtype == 'apachestats':
+            if not nagios.hoststatus[host]['services'].has_key('HTTP'):
+                continue
         tmpuri.append('&host=%s&graph=%s' % (host, graphtype))
     tmpuri = ''.join(tmpuri)
     bodytext.append('  <h1>[<a href="%s">Show All Graphs</a>]</h1>' % tmpuri)
