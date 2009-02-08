@@ -35,6 +35,7 @@ endTime_s=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(endTime))
 # Figure out which graphs to show
 rrdtype = form.getfirst('type')
 imguris = []
+pageuris = []
 if rrdtype == 'host':
     hosts = form.getlist('host')
     graphs = form.getlist('graph')
@@ -42,12 +43,16 @@ if rrdtype == 'host':
         if len(graphs) < index:
             break
         imguri = 'hostrrd.cgi?host=%s&graph=%s&width=600&height=200'
-        imguris.append(imguri % (host,graphs[index]))
+        imguris.append(imguri % (host, graphs[index]))
+        pageuri = '?type=host&host=%s&graph=%s'
+        pageuris.append(pageuri % (host, graphs[index]))
 elif rrdtype == 'datasource':
     datasources = form.getlist('datasource')
     for datasource in datasources:
-        imguri = 'rrdimg.cgi?width=600&height=200&datasource=%s&start=%s&end=%s'
-        imguris.append(imguri % (datasource, startTime, endTime))
+        imguri = 'rrdimg.cgi?width=600&height=200&datasource=%s'
+        imguris.append(imguri % datasource)
+        pageuri = '?type=datasource&datasource=%s'
+        pageuris.append(imguri % datasource)
 else:
     bodytext.append('<h1>Error: Unknown type: %s</h1>' % rrdtype)
 
@@ -111,7 +116,12 @@ for (index, uri) in enumerate(imguris):
     tmpurl = re.sub(r'&start=\d*', '&start=%d' % (endTime - 21600), thisurl)
     bodytext.append('   <h3><a href="%s">6 hours</h3>' % tmpurl)
     bodytext.append('  </td>')
-    bodytext.append('  <td><img src="%s" style="display: block; margin: auto;" /></td>' % uri)
+    bodytext.append('  <td>')
+    bodytext.append('   <a href="%s">' % pageuris[index])
+    img = '    <img src="%s" style="display: block; margin: auto;" />' % uri
+    bodytext.append(img)
+    bodytext.append('   </a>')
+    bodytext.append('  </td>')
     bodytext.append('  <td>')
     bodytext.append('   <h2>Date</h2>')
     tmpurl = re.sub(r'&end=\d*', '', thisurl)
