@@ -4,6 +4,15 @@ Graphs
 Nboard has the ability to display various types of graphs in the interface.
 Currently support for two different sources of graphs are supported.
 
+
+Prerequisites
+-------------
+
+To display graphs you need rrdtool and the python interface to rrdtool. On
+many platforms you can install "python-rrd" or "python-rrdtool" to get all
+the neccesary packages. 
+
+
 Available Graphs
 ----------------
 
@@ -41,7 +50,7 @@ copy of eluna.
 * Edit conf/config.ini:
   - set "showHostGraphs" to true
   - modify hostGraphBaseUrl for your environment.
-* (optional) Change the if statements further down that builds the RRD
+* (optional) Change the if statements in hostrrd.cgi that build the graph
   to add or customize graphs for your environment.
 
 
