@@ -1,4 +1,5 @@
 2009 Feb  8 11:17:48 -0000 Zach White <zach@box.net> 0.7
+* Use address instead of host_name for host graphs.
 * Improve the README.graphs documentation.
 * Modify rrdimg.cgi to display multiple areas and lines.
 * Modify hoststatus.cgi to link to host graphs on rrdpage.cgi.
