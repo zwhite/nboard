@@ -1,4 +1,28 @@
+Graphs
+------
+
+Nboard has the ability to display various types of graphs in the interface.
+Currently support for two different sources of graphs are supported.
+
+Available Graphs
+----------------
+
+	eLuna Graph System
+
+If you are using the eLuna Graph System you can display graphs on the host
+overview pages. See the section below, "How To Display Graphs On Host Status
+Pages," for details on setting this up.
+
+	Datasources
+
+Datasources are individual RRD files that you want to generate graphs from.
+You can use any RRD file that is available to your nboard installation through
+HTTP. See the section below, "How To Configure And Use Datasources," for more
+information.
+
+
 How To Display Graphs On Host Status Pages
+------------------------------------------
 
 If you are using the eluna graph system on your monitored servers you can
 display those graphs on the host status page. For more information about
@@ -6,11 +30,61 @@ the eluna graph system see:
 
 http://steph.eluna.org/eluna_graph_system.html
 
-Right now the feature is not complete. If you wish to use it you will have
-to edit a script and may have to add some code. It is not for the feint of
-heart.
+If you use this feature, or want to and can't, please email me, <zach@box.net>.
+Outside interest will determine how much time I spend making this feature
+easy to use.
 
-* Edit line 54 of hostrrd.cgi, change the URL template to match your
-  environment.
-* (optional) Change the if statements further down that build the RRD
+This is still a work in progress, and is not as simple to setup as I would
+like. Additionally, it may be dependent upon changes I have made to my local
+copy of eluna. 
+
+* Edit conf/config.ini:
+  - set "showHostGraphs" to true
+  - modify hostGraphBaseUrl for your environment.
+* (optional) Change the if statements further down that builds the RRD
   to add or customize graphs for your environment.
+
+
+How To Configure And Use Datasources
+------------------------------------
+
+Datasources are individual RRD files that don't fit into the host graphs 
+above. You can use anything you like to populate the RRD, such as eluna, 
+cacti, mrtg, or your own custom script. The important part is that the RRD 
+file is available to nboard through HTTP.
+
+To setup a new datasource, edit the conf/datasources.ini file. Each section
+of this file defines a graph that can be displayed. Example graph:
+
+	[active_users]
+	title: Example.net - Active Users
+	url: http://server.example.net/rrd/active_users.rrd
+	area: active_users
+	line: login, logout
+	display: true
+
+Here we have defined a graph called "active_users". We can display this
+graph using the rrdpage.cgi script:
+
+  http://your.site/nboard/rrdpage.cgi?type=datasource&datasource=active_users
+
+Let's take a closer look at the graph definition, to see what's going on here.
+
+First, we start the section with "[active_users]". This must match the
+"datasource" parameter passed to the rrdpage.cgi script.
+
+The "title" parameter sets the title printed at the top of the graph.
+
+The "url" parameter defines the source for our graph data. You may use any
+URL scheme that your local python installation supports.
+
+The "area" parameter is a comma separated list of data to display as
+a shaded area. You can define up to 3 different data points here. This
+parameter is optional and should be commented out or deleted when not used.
+
+The "line" parameter is a comma separated list of data to display as a line.
+You can define up to 5 different data points to plot this way. This parameter 
+is optional and should be commented out or deleted when not used.
+
+The "display" parameter defines whether or not this graph will be displayed
+by the graphs.cgi script.

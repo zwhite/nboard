@@ -1,13 +1,15 @@
 # A list of RRD data sources and info about them.
 
 [fs_mb_per_hour]
-label: MB/hr
 title: Example.Com - FS Storage
-url: http://web1.sv2.example.com/rrd/mb_per_hour/mb_per_hour.rrd
+url: http://web1.example.com/rrd/mb_per_hour/mb_per_hour.rrd
 display: true
+area: fs_mb_per_hour
+#line: none
 
 [db_mb_per_hour]
-label: MB/hr
 title: Example.Com - DB Storage
-url: http://web1.sv2.example.com/rrd/mb_per_hour/mb_per_hour.rrd
+url: http://web1.example.com/rrd/mb_per_hour/mb_per_hour.rrd
 display: true
+area: db_mb_per_hour
+#line: none
