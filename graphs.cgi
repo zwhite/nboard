@@ -21,14 +21,13 @@ for section in config.sections():
 graphs = dataSources.keys()
 graphs.sort()
 for graph in graphs:
-    if dataSources[graph]['display'].lower() == 'false':
-        continue
+    #if dataSources[graph]['display'].lower() == 'false':
+    #    continue
     graphuri = 'rrdpage.cgi?type=datasource&datasource=%s' % graph
-    graphimg = 'rrdimg.cgi?width=600&height=200&datasource=%s' % graph
+    graphimg = 'rrdimg.cgi?width=300&height=100&datasource=%s' % graph
+    bodytext.append('  <div class="graphDiv">')
     bodytext.append('  <h2>%s</h2>' % dataSources[graph]['title'])
-    bodytext.append('  <p>')
-    bodytext.append('   <a href="%s"><img src="%s" /></a>' % (graphuri, 
-                                                              graphimg))
-    bodytext.append('  </p>')
+    bodytext.append('  <a href="%s"><img src="%s" /></a>' % (graphuri,graphimg))
+    bodytext.append('  </div>')
 
 print HTML % {'refresh': 60, 'body': '\n'.join(bodytext)}

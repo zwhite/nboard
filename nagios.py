@@ -42,6 +42,7 @@ try:
     grouporder = grouporder.replace('\n', '').replace(' ', '').split(',')
 except ConfigParser.NoOptionError:
     grouporder = []
+showGraphs = config.get('general', 'graphs', True)
 hostGraphBaseUrl = config.get('general', 'hostGraphBaseUrl', True)
 objectcache = config.get('general', 'objectcache')
 showHostGraphs = config.getboolean('general', 'showHostGraphs')

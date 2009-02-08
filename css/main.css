@@ -148,3 +148,10 @@ div.statusGood, div.statusWarn, div.statusCrit {
 #commentEntryReason {
 	text-align: left;
 }
+
+/* Graph related blocks */
+.graphDiv {
+	display: block;
+	width: 387px;
+	float: left;
+}

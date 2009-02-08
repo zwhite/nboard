@@ -35,6 +35,8 @@ for extra in extraList:
 # Show the Nagios menu items
 bodytext.append('\n <hr />')
 bodytext.append(' <h2><a href="contacts.cgi" target="main_f">Contacts</a></h2>')
+if nagios.showGraphs:
+    bodytext.append(' <h2><a href="graphs.cgi" target="main_f">Graphs</a></h2>')
 bodytext.append(' <h2><a href="problems.cgi" target="main_f">Problems</a></h2>')
 bodytext.append(' <h2><a href="iphone.cgi" target="_blank">iPhone</a></h2>')
 

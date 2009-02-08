@@ -4,8 +4,10 @@
 label: MB/hr
 title: Example.Com - FS Storage
 url: http://web1.sv2.example.com/rrd/mb_per_hour/mb_per_hour.rrd
+display: true
 
 [db_mb_per_hour]
 label: MB/hr
 title: Example.Com - DB Storage
 url: http://web1.sv2.example.com/rrd/mb_per_hour/mb_per_hour.rrd
+display: true

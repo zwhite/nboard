@@ -18,6 +18,7 @@ commandfile: /usr/local/nagios/var/rw/nagios.cmd
 defaultgroup: critical
 
 # If you wish to display graphs, see the README.graphs file.
+graphs:	       	  false
 showHostGraphs:   false
 hostGraphBaseUrl: http://%s.example.com/rrd/%s/%s.rrd
 
