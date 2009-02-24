@@ -325,8 +325,8 @@ if __name__ == '__main__':
     #print commands
     #print contacts['zwhite']
     #print contactgroups
-    print hosts['cronos.sv2']['address']
-    #print hostgroups
+    #print hosts['cronos.sv2']['address']
+    print hostgroups['web']
     #print hoststatus['cronos.sv2']['services'].keys()
     #print services
     #print servicegroups['notify_sms']

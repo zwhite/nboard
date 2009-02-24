@@ -103,7 +103,6 @@ th {
 
 .list {
 	display: block;
-	float: clear;
 	width: 90%;
 	text-align: left;
 }
