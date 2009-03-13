@@ -8,8 +8,8 @@ config = ConfigParser.SafeConfigParser()
 config.read('conf/datasources.ini')
 
 # Colors for the graphs
+areaColors = ['#FF0000', '#EA8F00', '#EACC00', '#00FF00']
 lineColors = ['#CCCCCC', '#999999', '#666666', '#333333', '#000000']
-areaColors = ['#FF0000', '#EA8F00', '#EACC00']
 # Variables
 form = cgi.FieldStorage()
 ds=form.getfirst('datasource')
@@ -74,6 +74,7 @@ for l in line:
     graphcmd.append('GPRINT:%(ds)s:AVERAGE:" Average\\: %%lf"' % {'ds': l})
     graphcmd.append('GPRINT:%(ds)s:MAX:" Max\\: %%lf\\n"' % {'ds': l})
 graphcmds=' '.join(graphcmd)
+sys.stderr.write(graphcmds+'\n')
 
 # Do something with the RRD
 fd, graphfile=tempfile.mkstemp()
