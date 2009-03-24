@@ -7,8 +7,7 @@ import clickatel, nagios
 
 # Attempt to log our options for debugging purposes.
 try:
-    options = open('/tmp/notify_opts.txt', 'w')
-    options.seek(-1)
+    options = open('/tmp/notify_opts.txt', 'a')
     for arg in sys.argv:
         options.write("'%s' " % arg)
     options.write('\n')
