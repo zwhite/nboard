@@ -35,6 +35,8 @@ for host in hostlist:
         currentState = ('statusGood', 'OK')
     elif hoststatus['current_state'] == '1':
         currentState = ('statusCrit', 'CRITICAL')
+    else:
+        currentState = ('statusUnknown', 'UNKNOWN')
     bodytext.append('   <tr>')
     bodytext.append('    <td class="nowrap"><a href="hoststatus.cgi?host=%s"><img src="%s" />%s</a></td>' % (host, nagios.getHostIcon(host), hosttext))
     bodytext.append('    <td class="%s narrow">%s</td>' % currentState)
