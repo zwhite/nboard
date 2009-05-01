@@ -11,7 +11,7 @@ def iconNotify(type, target, title='', enabled=True):
     if enabled:
         icon = 'images/notify.gif'
     else:
-        icon = 'images/ndisabled.gif'
+        icon = 'images/icon_noalert.png'
     if nagios.permUserWrite():
         if type == 'contact':
             if enabled:

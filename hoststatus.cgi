@@ -19,7 +19,7 @@ bodytext.append('  <h1>Status for <a href="?host=%s">%s</a></h1>' % (host,host))
 if 'comment' in hoststatus:
     for comment in hoststatus['comment']:
         if comment['comment_data'] != '':
-            bodytext.append('<h3>%s: %s (%s)</h3>' % (comment['author'].split()[0], comment['comment_data'], comment['source']))
+            bodytext.append('<h2>%s: %s (%s)</h2>' % (comment['author'].split()[0], comment['comment_data'], comment['source']))
 
 # Print the comment entry field, when appropriate
 if nagios.permUserWrite():
@@ -49,7 +49,9 @@ if hoststatus['notifications_enabled'] == '0':
 else:
     bodytext.append('     <th class="nowrap">%s</th>' % html.iconNotify('service', host, 'all services', True))
 bodytext.append('   </tr>')
+rownum = 0
 for service in hoststatus['services']:
+    rownum += 1
     service = hoststatus['services'][service]
     description = service['service_description']
 
@@ -76,10 +78,13 @@ for service in hoststatus['services']:
                   (comment['author'].split()[0], comment['comment_data'], 
                   pluginOutput, comment['type'], comment['source'])
 
-    bodytext.append('   <tr>')
+    if rownum % 2 == 0:
+	    bodytext.append('   <tr class="even">')
+    else:
+	    bodytext.append('   <tr class="odd">')
     tmpuri = '?host=%s&service=%s' % \
       (hoststatus['host_name'], urllib.quote(service['service_description']))
-    bodytext.append('    <td><a href="%s">%s</a></td>' % (tmpuri, description))
+    bodytext.append('    <td class="host"><a href="%s">%s</a></td>' % (tmpuri, description))
     bodytext.append('    <td class="%s narrow">%s</td>' % currentState)
     bodytext.append('    <td class="timestamp"><p>%s</p></td>' % lastTimeOK)
     bodytext.append('    <td><p>%s</p></td>' % pluginOutput)

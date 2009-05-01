@@ -1,44 +1,182 @@
 body, html {
 	font-size: 11pt;
-	background-color: #BDD8E9;
-	color: black;
+	background-color: #bebebe;
+	color: #333;
+	padding: 0;
+	margin: 0;
+}
+
+div#menu_wrapper, div#topmenu_wrapper {
+	background-color: #333;
+}
+
+div#topmenu_wrapper {
+	width: 100%;
+	height: 32px;
 }
 
 a {
 	margin-right: 0.5ex;
-	text-decoration: underline;
-}
-
-a:link {
-	color: #000000;
+	text-decoration: none;
+	color: #dff;
 }
 
 a:visited {
-	color: #000000;
+	color: #dff;
 }
 
 div {
-	margin-left: 0.5ex;
+	/*margin-left: 0.5ex;*/
 }
 
+ul#topmenu {
+	padding: 3px;
+	list-style: none;
+}
+
+ul#topmenu li {
+	padding: 6px 0px 0 35px;
+	margin: 0;
+	list-style-type: none;
+	float: left;
+	background-repeat: no-repeat;
+	background-position: 8px 2px;
+}
+
+ul#topmenu li.critical {
+	background-image: url(../images/icon_application.gif);
+}
+
+ul#topmenu li.database {
+	background-image: url(../images/icon_databases.gif);
+}
+
+ul#topmenu li.search {
+	background-image: url(../images/icon_search.gif);
+}
+
+ul#topmenu li.web {
+	background-image: url(../images/icon_webs.gif);
+	background-position: 8px 2px; /* image is slightly wrong */
+}
+
+ul#topmenu li.storage {
+	background-image: url(../images/icon_storage.gif);
+}
+
+ul#topmenu li.util {
+	background-image: url(../images/icon_util.gif);
+}
+
+ul#topmenu li.network {
+	background-image: url(../images/icon_network.gif);
+}
+
+ul#topmenu li.noncritical {
+	background-image: url(../images/icon_noncritical.gif);
+}
+
+ul#topmenu li.dev {
+	background-image: url(../images/icon_dev.gif);
+}
+
+ul#topmenu li.it {
+	background-image: url(../images/icon_it.gif);
+}
+
+ul#topmenu li.test {
+	background-image: url(../images/icon_test.gif);
+}
+
+ul.menu {
+	padding: 0;
+	padding-bottom: 20px;
+}
+
+ul.menu li {
+	padding: 4px 4px 4px 30px;
+	list-style-type: none;
+	background-repeat: no-repeat;
+	background-position: 2px 2px;
+}
+
+ul.menu li a {
+	color: #ddd;
+	font-size: 110%;
+	text-decoration: none;
+}
+
+/** Add new extras icons here. */
+
+ul#extras li.application {
+	background-image: url(../images/icon_application.gif);
+}
+
+ul#extras li.databases {
+	background-image: url(../images/icon_databases.gif);
+}
+
+ul#extras li.exceptions {
+	background-image: url(../images/icon_application.gif);
+}
+
+ul#extras li.network {
+	background-image: url(../images/icon_network.gif);
+}
+
+ul#extras li.site_stats {
+	background-image: url(../images/icon_sitestats.gif);
+}
+
+ul#extras li.timings {
+	background-image: url(../images/icon_timings.gif);
+}
+
+ul#extras li.webs {
+	background-image: url(../images/icon_webs.gif);
+	background-position: 0 2px; /* image is slightly wrong */
+}
+
+/** Add new menu icons here. */
+
+ul#menu li.contacts {
+	background-image: url(../images/icon_contacts.gif);
+}
+
+ul#menu li.graphs {
+	background-image: url(../images/icon_graphs.gif);
+}
+
+ul#menu li.problems {
+	background-image: url(../images/icon_problems.gif);
+}
+
+ul#menu li.iphone {
+	background-image: url(../images/icon_iphone.gif);
+}
+
+
+
+
 h1 {
-	font-size: 200%;
+	font-size: 160%;
 	font-weight: bold;
-	margin-top: 0.5ex;
+	margin: 10px 0;
 	text-align: center;
 }
 
 h2 {
-	font-size: 180%;
+	font-size: 140%;
 	font-weight: bold;
-	margin-top: 0.5ex;
+	margin: 10px 0;
 	text-align: center;
 }
 
 h3 {
-	font-size: 160%;
+	font-size: 110%;
 	font-weight: bold;
-	text-align: center;
+	padding: 3px 3px 3px 4px;
+	color: #aaa;
 }
 
 h4 {
@@ -55,8 +193,7 @@ h5 {
 
 img {
 	border: 0;
-	margin-top: 3px;
-	margin-left: 3px;
+	margin: 0;
 }
 
 input {
@@ -77,22 +214,45 @@ table {
 	width: 95%;
 	margin-left: 1ex;
 	margin-right: 0.5ex;
+	background-color: #fff;
 }
 
+tr.even td {
+	background-color: #fff;
+}
+
+tr.odd td {
+	background-color: #f1f1f1;
+}
+
+tr.odd td.host, tr.even td.host {
+	background-color: #e8e8e8;
+}
+
+
+
 td {
-	background-color: #BBBBBB;
+	background-color: #fff;
+	padding: 5px;
 	border: 1px solid white;
 	border-left: none;
-	color: black;
+}
+
+td img {
+	margin: 3px;
+}
+
+td a, td a:visited {
+	color: #454545;
 }
 
 th {
-	background-color: #444444;
-	border: 1px solid white;
+	background-color: #d4d4d4;
+	border: 1px solid #aeaeae;
 	border-left: none;
 	border-top: none;
-	color: white;
 	text-align: center;
+	padding: 5px;
 }
 
 /* Random classes that can be applied */
@@ -112,20 +272,27 @@ th {
 }
 
 /* Classes for styling statuses */
-.statusGood {
-	background-color: green;
-	color: black;
+a.statusGood {
+	/* normal link color */
 }
 
-.statusWarn {
-	background-color: #ECEC00;
-	color: black;
+/* this can't be the right way to do this, though atm im not sure the better way */
+h2.statusWarn a, h2.statusWarn a:visited, li.statusWarn a, li.statusWarn a:visited, a.statusWarn, a:visited.statusWarn {
+	color: #ff4;
 }
 
-.statusCrit {
-	background-color: #EA2727;
-	color: black;
+tr.even td.statusWarn, tr.odd td.statusWarn {
+	background-color: #ff9;
 }
+
+h2.statusCrit a, h2.statusCrit a:visited, li.statusCrit a, li.statusCrit a:visited, a.statusCrit, a:visited.statusCrit {
+	color: #f50202;
+}
+
+tr.even td.statusCrit, tr.odd td.statusCrit {
+	background-color: #f55;
+}
+
 
 div.statusGood, div.statusWarn, div.statusCrit {
 	float: left;

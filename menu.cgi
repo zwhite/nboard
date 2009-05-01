@@ -17,10 +17,12 @@ if not group:
 
 # Setup the page
 bodytext = []
-bodytext.append('<h1><img src="images/nboard_64.png" /></h1>')
-bodytext.append('<hr />')
+bodytext.append('<div id="menu_wrapper">')
+bodytext.append('<img src="images/nboard.gif" />')
 
 # Display the items in extras/
+bodytext.append('<h3>Extras</h3>')
+bodytext.append('<ul id="extras" class="menu">')
 extraList = glob.glob('extras/*')
 extraList.sort()
 for extra in extraList:
@@ -28,20 +30,32 @@ for extra in extraList:
     if ext not in ['cgi', 'htm', 'html', 'php', 'pl']:
         continue
     extraFile=os.path.basename(extra)
-    extraTitle='.'.join(extraFile.split('.')[:-1]).title()
-    bodytext.append(' <h2><a href="extras/%s" target="main_f">%s</a></h2>' \
-      % (extraFile, extraTitle))
+    extraName='.'.join(extraFile.split('.')[:-1])
+    extraTitle=extraName.title().replace('_', ' ')
+    bodytext.append(' <li class="%s">' % extraName)
+    bodytext.append('  <a href="extras/%s" target="main_f">%s</a>' % \
+        (extraFile, extraTitle))
+    bodytext.append(' </li>')
 
 # Show the Nagios menu items
-bodytext.append('\n <hr />')
-bodytext.append(' <h2><a href="contacts.cgi" target="main_f">Contacts</a></h2>')
+bodytext.append('<h3>Menu</h3>')
+bodytext.append('<ul id="menu" class="menu">')
+bodytext.append(' <li class="contacts">')
+bodytext.append('  <a href="contacts.cgi" target="main_f">Contacts</a>')
+bodytext.append(' </li>')
 if nagios.showGraphs:
-    bodytext.append(' <h2><a href="graphs.cgi" target="main_f">Graphs</a></h2>')
-bodytext.append(' <h2><a href="problems.cgi" target="main_f">Problems</a></h2>')
-bodytext.append(' <h2><a href="iphone.cgi" target="_blank">iPhone</a></h2>')
+    bodytext.append(' <li class="graphs">')
+    bodytext.append('  <a href="graphs.cgi" target="main_f">Graphs</a>')
+    bodytext.append(' </li>')
+bodytext.append(' <li class="problems">')
+bodytext.append('  <a href="problems.cgi" target="main_f">Problems</a>')
+bodytext.append(' </li>')
+bodytext.append(' <li class="iphone">')
+bodytext.append('  <a href="iphone.cgi" target="_blank">iPhone</a>')
+bodytext.append(' </li>')
+bodytext.append('</ul>')
 
 # Show the hosts in this current group
-bodytext.append('\n <hr />')
 groupstatus, notifications = nagios.groupStatus(group)
 if groupstatus > 0 and not notifications:
     statusClass = nagios.statuses[1]
@@ -67,5 +81,7 @@ for host in hostlist:
             if service_status > current_status:
                 current_status = service_status
         bodytext.append('  <a class="%s list" target="main_f" href="hoststatus.cgi?host=%s"><img src="%s" /> %s</a>' % (nagios.statuses[current_status], host, nagios.getHostIcon(host), host))
+
+bodytext.append('</div>')
 
 print HTML % {'refresh': 60, 'body': '\n'.join(bodytext)}

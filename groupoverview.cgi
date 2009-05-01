@@ -25,25 +25,30 @@ bodytext.append('    <th colspan="10">Service Detail</th>')
 bodytext.append('   </tr>')
 hostlist = nagios.hoststatus.keys()
 hostlist.sort()
+rowcount = 0
 for host in hostlist:
+    rowcount += 1
     if not nagios.inGroup(host, group): continue
     hosttext = host
     hoststatus = nagios.hoststatus[host]
     if hoststatus['notifications_enabled'] == '0':
-        hosttext = host + ' <img src="images/ndisabled.gif" />'
+        hosttext = host + ' <img src="images/icon_noalert.png" />'
     if hoststatus['current_state'] == '0':
         currentState = ('statusGood', 'OK')
     elif hoststatus['current_state'] == '1':
         currentState = ('statusCrit', 'CRITICAL')
     else:
         currentState = ('statusUnknown', 'UNKNOWN')
-    bodytext.append('   <tr>')
-    bodytext.append('    <td class="nowrap"><a href="hoststatus.cgi?host=%s"><img src="%s" />%s</a></td>' % (host, nagios.getHostIcon(host), hosttext))
+    if rowcount % 2 == 0:
+        bodytext.append('   <tr class="even">')
+    else:
+        bodytext.append('   <tr class="odd">')
+    bodytext.append('    <td class="host nowrap"><a href="hoststatus.cgi?host=%s"><img src="%s" />%s</a></td>' % (host, nagios.getHostIcon(host), hosttext))
     bodytext.append('    <td class="%s narrow">%s</td>' % currentState)
     for service in hoststatus['services']:
         service = hoststatus['services'][service]
         if service['notifications_enabled'] == '0':
-            notifications = ' <img src="images/ndisabled.gif" />'
+            notifications = ' <img src="images/icon_noalert.gif" />'
         else:
             notifications = ''
         description = '%s%s' % (service['service_description'], notifications)
