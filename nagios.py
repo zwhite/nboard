@@ -54,6 +54,22 @@ if config.has_section('clickatell_sms'):
         'username': config.get('clickatell_sms', 'user'),
         'password': config.get('clickatell_sms', 'password')
     }
+if config.has_section('graphs'):
+    graphs = {
+        'small_width': config.get('graphs', 'small_width'),
+        'small_height': config.get('graphs', 'small_height'),
+        'large_width': config.get('graphs', 'large_width'),
+        'large_height': config.get('graphs', 'large_height'),
+        'linecolor': config.get('graphs', 'linecolor'),
+        'color1': config.get('graphs', 'color1'),
+        'color2': config.get('graphs', 'color2'),
+        'color3': config.get('graphs', 'color3'),
+        'color4': config.get('graphs', 'color4'),
+        'color5': config.get('graphs', 'color5'),
+        'dcolor1': config.get('graphs', 'dcolor1'),
+        'dcolor2': config.get('graphs', 'dcolor2'),
+        'dcolor3': config.get('graphs', 'dcolor3'),
+    }
 
 # Parse the nagios configuration
 objectcache_f = open(objectcache, 'r').readlines()

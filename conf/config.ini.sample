@@ -17,10 +17,28 @@ commandfile: /usr/local/nagios/var/rw/nagios.cmd
 # Some configuration defaults
 defaultgroup: critical
 
-# If you wish to display graphs, see the README.graphs file.
+### If you wish to display graphs, see the README.graphs file.
 graphs:	       	  false
 showHostGraphs:   false
 hostGraphBaseUrl: http://%s/rrd/%s/%s.rrd
+
+[graphs]
+# Graph sizes
+small_width: 300
+small_height: 100
+large_width: 600
+large_height: 200
+
+# Graph colors
+linecolor: #000000
+color1: #002997
+color2: #4568E4
+color3: #F51C2F
+color4: #FFC73A
+color5: #8DCD89
+dcolor1: #EACC00
+dcolor2: #EA8F00
+dcolor3: #FF0000
 
 # 24x24 icons work well here. You can use larger icons by adjusting the 
 # index.html frame spacing.
