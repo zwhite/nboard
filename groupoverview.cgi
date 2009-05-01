@@ -48,7 +48,7 @@ for host in hostlist:
     for service in hoststatus['services']:
         service = hoststatus['services'][service]
         if service['notifications_enabled'] == '0':
-            notifications = ' <img src="images/icon_noalert.gif" />'
+            notifications = ' <img src="images/icon_noalert.png" />'
         else:
             notifications = ''
         description = '%s%s' % (service['service_description'], notifications)
