@@ -48,6 +48,9 @@ rrdfd.close()
 graphcmd=[]
 graphcmd.append('--title "%s"' % dataSource['title'])
 graphcmd.append('--lower-limit=0')
+if dataSource.has_key('max'):
+	graphcmd.append('--upper-limit=%s' % dataSource['max'])
+	graphcmd.append('--rigid')
 graphcmd.append('--start=%s' % startTime)
 graphcmd.append('--end=%s' % endTime)
 graphcmd.append('--imgformat PNG')
@@ -74,11 +77,11 @@ for l in line:
     graphcmd.append('GPRINT:%(ds)s:AVERAGE:" Average\\: %%lf"' % {'ds': l})
     graphcmd.append('GPRINT:%(ds)s:MAX:" Max\\: %%lf\\n"' % {'ds': l})
 graphcmds=' '.join(graphcmd)
-sys.stderr.write(graphcmds+'\n')
 
 # Do something with the RRD
 fd, graphfile=tempfile.mkstemp()
-os.system('rrdtool graph %s %s > /tmp/rrdtool_output' % (graphfile, graphcmds))
+os.system('echo rrdtool graph %s %s > /tmp/rrdtool_output' % (graphfile, graphcmds))
+os.system('rrdtool graph %s %s >> /tmp/rrdtool_output' % (graphfile, graphcmds))
 
 # Send the user the generated graph
 print 'Content-Type: image/png\n'
