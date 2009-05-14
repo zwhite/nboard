@@ -132,7 +132,7 @@ ul#extras li.timings {
 	background-image: url(../images/icon_timings.gif);
 }
 
-ul#extras li.webs {
+ul#extras li.webs, ul#extras li.nginx {
 	background-image: url(../images/icon_webs.gif);
 	background-position: 0 2px; /* image is slightly wrong */
 }
