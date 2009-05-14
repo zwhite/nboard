@@ -325,6 +325,7 @@ div.statusGood, div.statusWarn, div.statusCrit {
 /* Style for round boxes. */
 .round {
 	background-color: #aaa;
+	color: #ccc;
 	display: inline;
 	line-height: 250%;
 	margin: 5px;
