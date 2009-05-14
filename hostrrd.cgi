@@ -72,6 +72,7 @@ graphcmd = graphcmd.replace('{#server#}', host)
 graphcmd = graphcmd.replace('{#path#}', tmpdir+'/')
 for color in ['linecolor', 'color1', 'color2', 'color3', 'color4', 'color5', 'dcolor1', 'dcolor2', 'dcolor3']:
     graphcmd = graphcmd.replace('{#%s#}' % color, nagios.graphs[color])
+graphcmd = '--start %s --end %s %s' % (startTime, endTime, graphcmd)
 
 # Do something with the RRD
 fd, graphfile=tempfile.mkstemp()

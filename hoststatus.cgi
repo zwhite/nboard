@@ -99,24 +99,17 @@ bodytext.append('  </table>')
 # Print the graph(s) associated with what the user clicked on
 if nagios.showHostGraphs:
     tmpuri = ['rrdpage.cgi?type=host']
-    # FIXME: Pull this from the ini files.
-    for graphtype in ['01_load', '02_cpu', '03_mem', '04_process', '07_space', '08_apachestats', '09_nginxstats']:
+    graphlisturl = nagios.hostGraphBaseUrl % host + '/../graphlist.pl'
+    graphlist = urllib.urlopen(graphlisturl).read()
+    # FIXME: Use simplejson in the future
+    graphtypes = graphlist[2:-2].split('", "')
+    for graphtype in graphtypes:
         tmpuri.append('&host=%s&graph=%s' % (host, graphtype))
     tmpuri = ''.join(tmpuri)
     bodytext.append('  <h1>[<a href="%s">Show All Graphs</a>]</h1>' % tmpuri)
-    printDefaultGraphs=True
-    if printDefaultGraphs:
-        bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=01_load">' % (hoststatus['host_name']))
-        bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=01_load&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
-        bodytext.append('  </a>')
-        bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=02_cpu">' % (hoststatus['host_name']))
-        bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=02_cpu&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
-        bodytext.append('  </a>')
-        bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=03_mem">' % (hoststatus['host_name']))
-        bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=03_mem&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
-        bodytext.append('  </a>')
-        bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=04_process">' % (hoststatus['host_name']))
-        bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=04_process&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name']))
+    for graphtype in graphtypes:
+        bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=%s">' % (hoststatus['host_name'], graphtype))
+        bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=%s&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name'], graphtype))
         bodytext.append('  </a>')
 
 # Render the page and send it to the user
