@@ -1,7 +1,7 @@
 #!/usr/bin/python
 """Displays the status for a host."""
 
-import cgi, cgitb, os, sys, urllib
+import cgi, cgitb, os, socket, sys, urllib
 import html, nagios
 cgitb.enable(logdir="/tmp")
 
@@ -100,9 +100,13 @@ bodytext.append('  </table>')
 if nagios.showHostGraphs:
     tmpuri = ['rrdpage.cgi?type=host']
     graphlisturl = nagios.hostGraphBaseUrl % host + '/../graphlist.pl'
-    graphlist = urllib.urlopen(graphlisturl).read()
+    socket.setdefaulttimeout(3)
+    try:
+        graphlist = urllib.urlopen(graphlisturl).read()
+        graphtypes = graphlist[2:-2].split('", "')
+    except IOError, e:
+        graphtypes = []
     # FIXME: Use simplejson in the future
-    graphtypes = graphlist[2:-2].split('", "')
     for graphtype in graphtypes:
         tmpuri.append('&host=%s&graph=%s' % (host, graphtype))
     tmpuri = ''.join(tmpuri)
