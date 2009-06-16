@@ -107,14 +107,15 @@ if nagios.showHostGraphs:
     except IOError, e:
         graphtypes = []
     # FIXME: Use simplejson in the future
-    for graphtype in graphtypes:
-        tmpuri.append('&host=%s&graph=%s' % (host, graphtype))
-    tmpuri = ''.join(tmpuri)
-    bodytext.append('  <h1>[<a href="%s">Show All Graphs</a>]</h1>' % tmpuri)
-    for graphtype in graphtypes:
-        bodytext.append('  <a href="rrdpage.cgi?type=host&host=%s&graph=%s">' % (hoststatus['host_name'], graphtype))
-        bodytext.append('   <img src="hostrrd.cgi?host=%s&graph=%s&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name'], graphtype))
-        bodytext.append('  </a>')
+    if graphtypes:
+        for graphtype in graphtypes:
+            tmpuri.append('&host=%s&graph=%s' % (host, graphtype))
+        tmpuri = ''.join(tmpuri)
+        bodytext.append('<h1>[<a href="%s">Show All Graphs</a>]</h1>' % tmpuri)
+        for graphtype in graphtypes:
+            bodytext.append('<a href="rrdpage.cgi?type=host&host=%s&graph=%s">' % (hoststatus['host_name'], graphtype))
+            bodytext.append('<img src="hostrrd.cgi?host=%s&graph=%s&width=300&height=100&graphlegend=false" />' % (hoststatus['host_name'], graphtype))
+            bodytext.append('</a>')
 
 # Render the page and send it to the user
 print HTML % {'refresh': 300, 'body': '\n'.join(bodytext)}
