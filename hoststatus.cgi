@@ -100,7 +100,7 @@ bodytext.append('  </table>')
 if nagios.showHostGraphs:
     tmpuri = ['rrdpage.cgi?type=host']
     graphlisturl = nagios.hostGraphBaseUrl % host + '/../graphlist.pl'
-    socket.setdefaulttimeout(3)
+    socket.setdefaulttimeout(10)
     try:
         graphlist = urllib.urlopen(graphlisturl).read()
         graphtypes = graphlist[2:-2].split('", "')
