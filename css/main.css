@@ -143,6 +143,10 @@ ul#menu li.contacts {
 	background-image: url(../images/icon_contacts.gif);
 }
 
+ul#menu li.disabledalerts {
+	background-image: url(../images/icon_noalert.gif);
+}
+
 ul#menu li.graphs {
 	background-image: url(../images/icon_graphs.gif);
 }

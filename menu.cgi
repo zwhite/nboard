@@ -20,6 +20,27 @@ bodytext = []
 bodytext.append('<div id="menu_wrapper">')
 bodytext.append('<img src="images/nboard.gif" />')
 
+# Show the Nagios menu items
+bodytext.append('<h3>Menu</h3>')
+bodytext.append('<ul id="menu" class="menu">')
+bodytext.append(' <li class="contacts">')
+bodytext.append('  <a href="contacts.cgi" target="main_f">Contacts</a>')
+bodytext.append(' </li>')
+bodytext.append(' <li class="disabledalerts">')
+bodytext.append('  <a href="disabledalerts.cgi" target="main_f">Disabled</a>')
+bodytext.append(' </li>')
+if nagios.showGraphs:
+    bodytext.append(' <li class="graphs">')
+    bodytext.append('  <a href="graphs.cgi" target="main_f">Graphs</a>')
+    bodytext.append(' </li>')
+bodytext.append(' <li class="problems">')
+bodytext.append('  <a href="problems.cgi" target="main_f">Problems</a>')
+bodytext.append(' </li>')
+bodytext.append(' <li class="iphone">')
+bodytext.append('  <a href="iphone.cgi" target="_blank">iPhone</a>')
+bodytext.append(' </li>')
+bodytext.append('</ul>')
+
 # Display the items in extras/
 bodytext.append('<h3>Extras</h3>')
 bodytext.append('<ul id="extras" class="menu">')
@@ -36,24 +57,6 @@ for extra in extraList:
     bodytext.append('  <a href="extras/%s" target="main_f">%s</a>' % \
         (extraFile, extraTitle))
     bodytext.append(' </li>')
-
-# Show the Nagios menu items
-bodytext.append('<h3>Menu</h3>')
-bodytext.append('<ul id="menu" class="menu">')
-bodytext.append(' <li class="contacts">')
-bodytext.append('  <a href="contacts.cgi" target="main_f">Contacts</a>')
-bodytext.append(' </li>')
-if nagios.showGraphs:
-    bodytext.append(' <li class="graphs">')
-    bodytext.append('  <a href="graphs.cgi" target="main_f">Graphs</a>')
-    bodytext.append(' </li>')
-bodytext.append(' <li class="problems">')
-bodytext.append('  <a href="problems.cgi" target="main_f">Problems</a>')
-bodytext.append(' </li>')
-bodytext.append(' <li class="iphone">')
-bodytext.append('  <a href="iphone.cgi" target="_blank">iPhone</a>')
-bodytext.append(' </li>')
-bodytext.append('</ul>')
 
 # Show the hosts in this current group
 groupstatus, notifications = nagios.groupStatus(group)
